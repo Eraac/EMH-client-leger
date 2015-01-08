@@ -95,27 +95,6 @@ class RegistrationRepository extends EntityRepository
         return $results->getQuery()->getResult();
     }
 
-    // Retourne les derniers enregistrements soumit
-    public function getLastSubmit($idUser, $offset, $limit)
-    {
-        $qb = $this->createQueryBuilder('r')
-                    ->orderBy('r.registrationDate', 'ASC')
-                    ->where('r.userSubmit = :idUser')
-                    ->setParameter("idUser", $idUser)
-                    ->setFirstResult($offset)
-                    ->setMaxResults($limit);
-
-        $results = new Paginator($qb, true);
-
-        return $results->getQuery()->getResult();
-    }
-
-    // Additionne countUnreadSubmitByOther et countUnreadSubmitByUser
-    public function countUnreadSubmit($idUser)
-    {
-        return $this->countUnreadSubmitByOther($idUser) + $this->countUnreadSubmitByUser($idUser);
-    }
-
     // Retourne le nombre d'enregistrement non traités des autres utilisateurs
     public function countUnreadSubmitByOther($idUser)
     {
@@ -125,22 +104,6 @@ class RegistrationRepository extends EntityRepository
                     ->leftJoin('f.readers', 'g')
                     ->leftJoin('g.users', 'u')
 					->where('r.userValidate is NULL AND u.id = :idUser AND r.userSubmit != :idUser')
-                    ->setParameters(array(
-                        'idUser'        => $idUser
-                    ));
-
-        return $qb->getQuery()->getSingleScalarResult();
-    }
-
-    // Retourne le nombre d'enregistrement non traités de l'utilisateur courant
-    public function countUnreadSubmitByUser($idUser)
-    {
-        $qb = $this->createQueryBuilder('r')
-                    ->select('COUNT(r)')
-                    ->leftJoin('r.form', 'f')
-                    ->leftJoin('f.writers', 'g')
-                    ->leftJoin('g.users', 'u')
-					->where('r.userValidate is NULL AND u.id = :idUser AND r.userSubmit = :idUser')
                     ->setParameters(array(
                         'idUser'        => $idUser
                     ));
@@ -172,49 +135,7 @@ class RegistrationRepository extends EntityRepository
         return $results->getQuery()->getResult();
     }
 
-    // Retourne des enregistrements non traité soumi par vous
-    public function listUnreadSubmitByUser($idUser, $statusPending, $offset, $limit)
-    {
-        $qb = $this->createQueryBuilder('r')
-            ->leftJoin('r.form', 'f')
-            ->addSelect('f')
-            ->orderBy("r.registrationDate", 'DESC')
-            ->where('r.status = :statusPending AND r.userSubmit = :idUser')
-            ->setParameters(array(
-                'statusPending' => $statusPending,
-                'idUser'        => $idUser
-            ))
-            ->setFirstResult($offset)
-            ->setMaxResults($limit);
-
-        $results = new Paginator($qb, true);
-
-        return $results->getQuery()->getResult();
-    }
-
     // Retourne des enregistrements traités soumi par vous
-    public function listReadSubmitByOther($idUser, $statusPending, $offset, $limit)
-    {
-        $qb = $this->createQueryBuilder('r')
-            ->leftJoin('r.form', 'f')
-            ->leftJoin('r.userSubmit', 'u')
-            ->addSelect('u')
-            ->addSelect('f')
-            ->orderBy("r.validationDate", 'ASC')
-            ->where('r.userValidate = :idUser AND r.status != :statusPending')
-            ->setParameters(array(
-                'statusPending' => $statusPending,
-                'idUser'        => $idUser
-            ))
-            ->setFirstResult($offset)
-            ->setMaxResults($limit);
-
-        $results = new Paginator($qb, true);
-
-        return $results->getQuery()->getResult();
-    }
-
-    // Retourne des enregistrements traités par vous
     public function listReadSubmitByUser($idUser, $statusPending, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('r')
@@ -327,15 +248,6 @@ class RegistrationRepository extends EntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 }
-
-
-
-
-
-
-
-
-
 
 
 

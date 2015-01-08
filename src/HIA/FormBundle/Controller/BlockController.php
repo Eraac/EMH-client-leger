@@ -31,25 +31,6 @@ class BlockController extends Controller
     /**
      * @Template()
      *
-     * Bloc listant les soumissions faite par l'utilisateur courant non traitées
-     */
-    public function unreadUserAction($offset, $limit)
-    {
-        // On récupère l'id de l'utilisateur courant
-        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
-
-        // On récupère le repository de Registration
-        $repo = $this->getDoctrine()->getManager()->getRepository('HIAFormBundle:Registration');
-
-        // On éxecute la requête
-        $listUnreadSubmitByUser = $repo->listUnreadSubmitByUser($idUser, Registration::$_STATUS['PENDING'], $offset, $limit);
-
-        return array('list' => $listUnreadSubmitByUser);
-    }
-
-    /**
-     * @Template()
-     *
      * Bloc affichant la liste des enregistrements traités de l'utilisateur courant
      */
     public function readUserAction($offset, $limit)
@@ -133,6 +114,26 @@ class BlockController extends Controller
 
 		return array("number" => $number);
 	}
+
+    /**
+     * Template()
+     */
+    public function countUnreadSubmitByOtherAction()
+    {
+        // On récupère l'id de l'utilisateur courant
+        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
+
+        // On récupère le repository de Registration
+        $repo = $this->getDoctrine()->getManager()->getRepository("HIAFormBundle:Registration");
+
+        // On récupère le nombre de registration disponible pour cet utilisateur qui sont non lus
+        $countUnreadSubmitByOther = $repo->countUnreadSubmitByOther($idUser);
+
+        return $this->render(
+            'HIAFormBundle:Block:countUnreadSubmitByOther.html.twig',
+            array('countUnreadSubmit' => $countUnreadSubmitByOther)
+        );
+    }
 }
 
 

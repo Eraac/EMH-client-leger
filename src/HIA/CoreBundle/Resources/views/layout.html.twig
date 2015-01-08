@@ -27,7 +27,7 @@
                 <nav role="navigation" class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="{{ path("HIAFormSearch") }}">Formulaires</a></li>
-                        <li><a href="{{ path("HIARegistrationSearch") }}">Enregistrements {{ render(controller("HIACoreBundle:Core:countUnreadSubmitByOther")) }}</a></li>                            
+                        <li><a href="{{ path("HIARegistrationSearch") }}">Enregistrements {{ render(controller("HIAFormBundle:Block:countUnreadSubmitByOther")) }}</a></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
