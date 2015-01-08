@@ -106,12 +106,12 @@ class RegistrationRepository extends EntityRepository
         return $results->getQuery()->getResult();
     }
 
-    public function countUnreadSubmit($idUser, $statusPending)
+    public function countUnreadSubmit($idUser)
     {
-        return $this->countUnreadSubmitByOther($idUser, $statusPending) + $this->countUnreadSubmitByUser($idUser, $statusPending);
+        return $this->countUnreadSubmitByOther($idUser) + $this->countUnreadSubmitByUser($idUser);
     }
 
-    public function countUnreadSubmitByOther($idUser, $statusPending)
+    public function countUnreadSubmitByOther($idUser)
     {
         $qb = $this->createQueryBuilder('r')
                     ->select('COUNT(r)')
@@ -128,7 +128,7 @@ class RegistrationRepository extends EntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
-    public function countUnreadSubmitByUser($idUser, $statusPending)
+    public function countUnreadSubmitByUser($idUser)
     {
         $qb = $this->createQueryBuilder('r')
                     ->select('COUNT(r)')
