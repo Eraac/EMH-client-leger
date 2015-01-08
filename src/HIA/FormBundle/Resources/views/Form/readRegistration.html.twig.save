@@ -1,0 +1,57 @@
+{% extends 'HIACoreBundle::layout.html.twig' %}
+
+{% block body %}
+<div class="col-lg-12">
+
+    <div class="page-header">
+        <h1 class="text-success">{{ registration.form.name }}</h1>
+    </div>
+
+</div>
+
+<div class="col-lg-9">
+    {% for register in registration.registers %}
+
+        <strong>{{ register.field.labelField }}</strong>
+
+        <div class="well well-sm">
+            {{ register.data }}
+        </div>
+    {% endfor %}
+</div>
+
+<div class="col-lg-3">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title"><span class="glyphicon glyphicon-eye-open"></span> Informations</h3>
+        </div>
+        <div class="panel-body">
+            <strong>Le :</strong> {{ registration.registrationDate|date("d-m-Y à H:i") }} <br>
+            <strong>Par :</strong> {{ registration.userSubmit.username }}
+        </div>
+    </div>
+    {% if (registration.userSubmit.id != app.user.id) and (registration.status == "1") %}
+    {% if registration.form.isDemand %}
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-pencil"></span> Actions</h3>
+            </div>
+            <div class="panel-body">
+                <a href="{{ path("HIAFormValidRegistration", {'id': registration.id, 'status': 3}) }}" class="btn btn-success btn-block">Accepter</a>
+                <a href="{{ path("HIAFormValidRegistration", {'id': registration.id, 'status': 4}) }}" class="btn btn-danger btn-block">Refuser</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-pencil"></span> Action</h3>
+            </div>
+            <div class="panel-body">
+                <a href="{{ path("HIAFormValidRegistration", {'id': registration.id, 'status': 2}) }}" class="btn btn-primary btn-block">Valider</a>
+            </div>
+        </div>
+    {% endif %}
+    {% endif %}
+</div>
+
+{% endblock %}

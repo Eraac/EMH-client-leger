@@ -1,0 +1,20 @@
+hia_form:
+    resource: "@HIAFormBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+hia_core:
+    resource: "@HIACoreBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+hia_user:
+    resource: "@HIAUserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+login_check:
+    pattern:   /login_check
+
+logout:
+    pattern:   /logout

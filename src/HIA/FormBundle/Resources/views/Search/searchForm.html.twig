@@ -1,0 +1,97 @@
+{% extends 'HIACoreBundle::layout.html.twig' %}
+
+{% block body %}
+    <div class="col-lg-12">
+        <div class="page-header">
+            <h1 class="text-success">Recherche personnalisée</h1>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <form class="form" action="#" role="form">
+            <div class="input-group">
+                <input type="text" id="formName" class="form-control input-lg" placeholder="Nom du formulaire">
+                <div id="btnFormSearch" class="input-group-addon"><span class="glyphicon glyphicon-refresh"></span> Rechercher</div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-lg-12 pushtop20 text-center">
+        {% for tag in tags %}
+            <h3 class="inline"><span id="{{ tag.id }}" class="hoveractive label label-primary selectableTag">{{ tag.name }}</span></h3>
+        {% endfor %}
+    </div>
+
+    <div class="col-lg-12 pushtop20">
+        
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Tags</th>
+                    <th class="text-center">Accès</th>
+                </tr>
+            </thead>
+            
+            <tbody id="listForm">
+                {% for form in forms %}
+                <tr>
+                    <td>{{ form.name }}</td>
+                    <td>
+                        {% for tag in form.tags %}
+                            <span class="label label-info">{{ tag.name }}</span>
+                        {% endfor %}
+                    </td>
+                    <td class="text-center"><a href="{{ path('HIAFormUse', {'slug': form.slug}) }}"><span class="glyphicon glyphicon-search"></span></a></td>
+                </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">Aucun formulaire</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+                
+    <nav class="text-center">
+        <ul class="pagination">
+            
+            {% if page > 1 %}
+            <li class="previous-page">
+                <a href="{{ path("HIAFormSearch", {'page': page - 1}) }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <li class="page"><a href="{{ path("HIAFormSearch", {'page': page - 1}) }}">{{ page - 1 }}</a></li>
+            {% else %}
+            <li class="previous-page disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+            {% endif %}
+            
+            <li class="page active"><a href="#">{{ page }} <span class="sr-only">(current)</span></a></li>
+    
+            {% if not end %}
+            <li class="page"><a href="{{ path("HIARegistrationSearch", {'page': page + 1}) }}">{{ page + 1 }}</a></li>
+
+            <li class="next-page">
+                <a href="{{ path("HIAFormSearch", {'page': page + 1}) }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="disabled next-page"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock body %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+{% endblock css %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset("js/selectTag.js") }}"></script>
+{% endblock javascripts %}

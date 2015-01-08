@@ -1,0 +1,119 @@
+{% extends 'HIACoreBundle::layout.html.twig' %}
+
+{% block body %}
+<div class="col-lg-12">
+    <div class="row">
+
+        <div class="col-lg-10">
+            <div class="page-header" style="border-color: #{{ registration.form.color }};">
+                <h1 class="text-success">{{ registration.form.name }}
+                    {% if registration.pending %}
+                        <span class="label label-info">En cours</span>
+                    {% elseif registration.validate %}
+                        <span class="label label-primary">Validé</span><small> par {{ registration.userValidate.fullName }}</small>
+                    {% elseif registration.accept %}
+                        <span class="label label-success">Accepté</span><small> par {{ registration.userValidate.fullName }}</small>
+                    {% elseif registration.refuse %}
+                        <span class="label label-danger">Refusé</span><small> par {{ registration.userValidate.fullName }}</small>
+                    {% endif %}
+                </h1>
+            </div>
+        </div>
+
+        <div class="hidden-sm hidden-xs hidden-md col-lg-2 text-center">
+            <img class="miniHIA" alt="..." src="/img/HIA.png">
+        </div>
+
+    </div>
+</div>
+
+<div class="col-lg-12">
+    <div class="row">
+
+        {% if (registration.userComment) and ((registration.userSubmit.id != app.user.id) and (registration.status == "1")) %}
+            {% set class = "col-lg-4 col-md-4 col-sm-6" %}
+        {% elseif (registration.userComment) or ((registration.userSubmit.id != app.user.id) and (registration.status == "1")) %}
+            {% set class = "col-lg-6 col-md-6 col-sm-12" %}
+        {% else %}
+            {% set class = "col-lg-12" %}
+        {% endif %}
+
+        <!-- Demande -->
+        <div class="col-lg-12 only-print">
+            <h1>Merci de recycler ce papier</h1>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-eye-open"></span> Demande</h3>
+                </div>
+                <div class="panel-body">
+                {% for register in registration.registers %}
+                    <div class="list-fields">
+                        <strong>{{ register.field.labelField }}</strong>
+
+                        <span class="well well-sm">
+                            {{ register.data|nl2br }}
+                        </span>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Demandeur -->
+        <div class="{{ class }}">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-user"></span> Demandeur</h3>
+                </div>
+                <div class="panel-body">
+                    <strong>Le :</strong> {{ registration.registrationDate|date("d-m-Y à H:i") }} <br>
+                    <strong>Par :</strong> {{ registration.userSubmit.fullName }}
+                </div>
+            </div>
+        </div>
+
+        {% if registration.userComment %}
+        <!-- Commentaire de l'utilisateur -->
+        <div class="{{ class }}">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-comment"></span> Remarque du demandeur</h3>
+                </div>
+                <div class="panel-body">
+                    {{ registration.userComment|nl2br }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if (registration.userSubmit.id != app.user.id) and (registration.status == "1") %}
+        <!-- Action -->
+        <div class="{{ class }}">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-pencil"></span> Action</h3>
+                </div>
+                <div class="panel-body">
+                {% if registration.form.isDemand %}
+                    <a href="{{ path("HIAFormValidRegistration", {'id': registration.id, 'status': 3}) }}" class="btn btn-success btn-block">Accepter</a>
+                    <a href="{{ path("HIAFormValidRegistration", {'id': registration.id, 'status': 4}) }}" class="btn btn-danger btn-block">Refuser</a>
+                {% else %}
+                    <a href="{{ path("HIAFormValidRegistration", {'id': registration.id, 'status': 2}) }}" class="btn btn-primary btn-block">Valider</a>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+{% endblock css %}

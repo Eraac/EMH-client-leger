@@ -1,0 +1,35 @@
+<p class="well well-sm text-center">
+    Traitée par vous
+</p>
+
+<div class="list-group">
+
+    {% for submit in list %}
+
+        <a href="{{ path('HIAFormReadRegistration', {'id': submit.id}) }}" class="list-group-item">
+            <h4 class="list-group-item-heading">{{ submit.form.name }} <small>le {{ submit.registrationDate|date("d-m-Y à H:i") }} par {{ submit.userSubmit.fullname }}</small></h4>
+            <p class="list-group-item-text">
+                {% if submit.pending %}
+                    <span class="label label-info">En cours</span>
+                {% elseif submit.validate %}
+                    <span class="label label-primary">Validé</span>
+                {% elseif submit.accept %}
+                    <span class="label label-success">Accepté</span>
+                {% elseif submit.refuse %}
+                    <span class="label label-danger">Refusé</span>
+                {% endif %}
+                {% if not submit.pending %}
+                par vous le {{ submit.validationDate|date("d-m-Y à H:i") }}
+                {% endif %}<br>
+                {{ submit.userComment }}
+            </p>
+        </a>
+    {% else %}
+        <div class="list-group-item">
+            <p class="list-group-item-text">
+                Aucun formulaire traité
+            </p>
+        </div>
+    {% endfor %}
+
+</div>

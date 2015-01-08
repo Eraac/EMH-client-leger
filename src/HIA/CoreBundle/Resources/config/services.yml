@@ -1,0 +1,4 @@
+services:
+    hia_checkaccess.hia_checkaccess:
+        class: HIA\CoreBundle\CheckAccess\CheckAccess
+        arguments: [@doctrine.orm.entity_manager]

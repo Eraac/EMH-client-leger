@@ -1,0 +1,8 @@
+services:
+    hia_formbuilder.formbuilder:
+        class: HIA\FormBundle\FormBuilder\FormBuilder
+        arguments: [@form.factory]
+
+    hia_convert.tostring:
+        class: HIA\FormBundle\ToString\ToString
+        arguments: [@doctrine.orm.entity_manager]

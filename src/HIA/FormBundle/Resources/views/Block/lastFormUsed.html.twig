@@ -1,0 +1,26 @@
+<p class="well well-sm text-center">
+    Dernier utilisés
+</p>
+
+<div class="list-group">
+
+    {% for registration in list %}
+
+        <a href="{{ path('HIAFormUse', {'slug': registration.form.slug}) }}" class="list-group-item">
+            <h4 class="list-group-item-heading">{{ registration.form.name }} <small>le {{ registration.registrationDate|date("d-m-Y H:i") }}</small></h4>
+            {% for tags in registration.form.tags %}
+                <span class="label label-primary">{{ tags.name }}</span>
+            {% endfor %}
+            <p class="list-group-item-text">
+                {{ registration.form.description }}
+            </p>
+        </a>
+    {% else %}
+        <div class="list-group-item">
+            <p class="list-group-item-text">
+                Aucun formulaire récemment utilisé
+            </p>
+        </div>
+    {% endfor %}
+
+</div>

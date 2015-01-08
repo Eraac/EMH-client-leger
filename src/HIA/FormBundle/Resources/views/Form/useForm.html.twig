@@ -1,0 +1,116 @@
+{% extends 'HIACoreBundle::layout.html.twig' %}
+{% form_theme form 'HIACoreBundle::bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block body %}
+
+<div class="col-lg-12">
+    <div class="row">
+
+        <div class="col-lg-10">
+            <div class="page-header" style="border-color: #{{ formInfo.color }};">
+                <h1 class="text-success">{{ formInfo.name }}</h1>
+            </div>
+
+            <h4 id="tagsList">
+                {% for tag in formInfo.tags %}
+                    <span class="label label-primary">{{ tag.name }}</span>
+                {% endfor %}
+            </h4>
+
+        </div>
+
+        <div class="hidden-sm hidden-xs hidden-md col-lg-2 text-center">
+            <img class="miniHIA" alt="Logo HIA" src="/img/HIA.png">
+        </div>
+
+    </div>
+</div>
+
+<div class="col-lg-12">
+    <div class="row">
+
+        {% if (formInfo.info) and (formInfo.important) %}
+            {% set class = "col-lg-3" %}
+        {% elseif (formInfo.info) or (formInfo.important) %}
+            {% set class = "col-lg-4" %}
+        {% else %}
+            {% set class = "col-lg-6" %}
+        {% endif %}
+
+        <div class="{{ class }}">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-file"></i> Description</h3>
+                </div>
+
+                <div class="panel-body">
+                    {{ formInfo.description }}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="{{ class }}">
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> Destinataires</h3>
+                </div>
+
+                <div class="panel-body">
+                    {% for group in formInfo.readers %}
+                        <span class="badge">{{ group.name }}</span>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+        {% if formInfo.info %}
+        <div class="{{ class }}">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-info-sign"></i> Information</h3>
+                </div>
+
+                <div class="panel-body">
+                    {{ formInfo.info }}
+                </div>
+
+            </div>
+        </div>
+        {% endif %}
+
+        {% if formInfo.important %}
+        <div class="{{ class }}">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-exclamation-sign"></i> Important</h3>
+                </div>
+
+                <div class="panel-body">
+                    {{ formInfo.important }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<div class="col-lg-12">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title"><span class="glyphicon glyphicon-pencil"></span> Formulaire</h3>
+        </div>
+        <div class="panel-body">
+        {{ form(form) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+{% endblock css %}

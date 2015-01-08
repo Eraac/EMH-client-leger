@@ -1,0 +1,89 @@
+#myTab {
+    margin-bottom: 15px;
+}
+
+.inline {
+    display: inline;
+}
+
+.hoveractive.label-primary:hover,
+.hoveractive.label-default:hover,
+.hoveractive.label-info:hover,
+.hoveractive.label-danger:hover,
+.hoveractive.label-success:hover,
+#btnFormSearch {
+    cursor: pointer;
+}
+
+#validBy label:not(.active),
+#submitBy label:not(.active) {
+    background-color: #777;
+    border-color: #777;
+}
+
+#validBy label:nth-child(2),
+#submitBy label:nth-child(2) {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+a.nounderline:hover {
+    text-decoration: none !important;
+}
+
+.pushtop20 {
+    margin-top: 20px;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+.miniHIA {
+    vertical-align: inherit;
+    height: 120px;
+    padding: 4px 21px;
+}
+
+.page-header {
+    border-width: 4px;
+}
+
+#tagsList {
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+.list-fields {
+    margin-bottom: 10px;
+}
+
+.list-fields .well {
+	display: inline-block;
+	margin-bottom: 0;
+}
+
+.list-fields:last-child {
+    margin-bottom: 0;
+}
+
+.list-fields strong {
+    width: 100px;
+    display: inline-block;
+}
+
+.only-print {
+    display: none;
+}
+
+.star-required {
+    color: red;
+}
+
+@media print {
+    .only-print {
+        display: block;
+        color: red;
+        text-align: center;
+    }
+}
