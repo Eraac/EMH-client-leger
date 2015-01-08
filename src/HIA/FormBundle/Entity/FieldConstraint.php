@@ -134,6 +134,7 @@ class FieldConstraint
         return $this->fields;
     }
 
+    // Retourne la contrainte instanciée
     public function getConstraintClass()
     {
         $constraint = null;

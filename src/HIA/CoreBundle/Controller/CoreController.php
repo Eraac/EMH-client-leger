@@ -38,7 +38,7 @@ class CoreController extends Controller
     }
     
     /**
-     * 
+     * TODO Retirer cette fonction du CoreBundle
      */
     public function countUnreadSubmitByOtherAction()
     {

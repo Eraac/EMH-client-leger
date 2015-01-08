@@ -13,6 +13,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class RegistrationRepository extends EntityRepository
 {
+    // Retourne tous les enregistrements qui correspondantes aux critéres (status, qui)
     public function getRegistrations($idUser, $idStatus, $who, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('r')
@@ -50,7 +51,8 @@ class RegistrationRepository extends EntityRepository
 
         return $results->getQuery()->getArrayResult();
     }
-    
+
+    // Retourne tous les enregistrements accessible pour un utilisateur
     public function getAll($idUser, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('r')
@@ -72,7 +74,8 @@ class RegistrationRepository extends EntityRepository
 
         return $results->getQuery()->getResult();
     }
-    
+
+    // Retourne les derniers formulaires utilisés par l'utilisateur
     public function getLastFormUsed($idUser, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('r')
@@ -92,6 +95,7 @@ class RegistrationRepository extends EntityRepository
         return $results->getQuery()->getResult();
     }
 
+    // Retourne les derniers enregistrements soumit
     public function getLastSubmit($idUser, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('r')
@@ -106,11 +110,13 @@ class RegistrationRepository extends EntityRepository
         return $results->getQuery()->getResult();
     }
 
+    // Additionne countUnreadSubmitByOther et countUnreadSubmitByUser
     public function countUnreadSubmit($idUser)
     {
         return $this->countUnreadSubmitByOther($idUser) + $this->countUnreadSubmitByUser($idUser);
     }
 
+    // Retourne le nombre d'enregistrement non traités des autres utilisateurs
     public function countUnreadSubmitByOther($idUser)
     {
         $qb = $this->createQueryBuilder('r')
@@ -118,16 +124,15 @@ class RegistrationRepository extends EntityRepository
                     ->leftJoin('r.form', 'f')
                     ->leftJoin('f.readers', 'g')
                     ->leftJoin('g.users', 'u')
-                    //->where('r.status = :statusPending AND u.id = :idUser AND r.userSubmit != :idUser')
 					->where('r.userValidate is NULL AND u.id = :idUser AND r.userSubmit != :idUser')
                     ->setParameters(array(
-  //                      'statusPending' => $statusPending,
                         'idUser'        => $idUser
                     ));
 
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    // Retourne le nombre d'enregistrement non traités de l'utilisateur courant
     public function countUnreadSubmitByUser($idUser)
     {
         $qb = $this->createQueryBuilder('r')
@@ -135,17 +140,15 @@ class RegistrationRepository extends EntityRepository
                     ->leftJoin('r.form', 'f')
                     ->leftJoin('f.writers', 'g')
                     ->leftJoin('g.users', 'u')
-                    //->where('r.status = :statusPending AND u.id = :idUser AND r.userSubmit = :idUser')
 					->where('r.userValidate is NULL AND u.id = :idUser AND r.userSubmit = :idUser')
                     ->setParameters(array(
-//                        'statusPending' => $statusPending,
                         'idUser'        => $idUser
                     ));
 
         return $qb->getQuery()->getSingleScalarResult();
     }
 
-    // Soumission que vous avez le droit de lire non soumit par vous
+    // Retourne des enregistrements que vous avez le droit de lire non soumit par vous
     public function listUnreadSubmitByOther($idUser, $statusPending, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('r')
@@ -169,7 +172,7 @@ class RegistrationRepository extends EntityRepository
         return $results->getQuery()->getResult();
     }
 
-    // Non traité soumit par vous
+    // Retourne des enregistrements non traité soumi par vous
     public function listUnreadSubmitByUser($idUser, $statusPending, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('r')
@@ -189,7 +192,7 @@ class RegistrationRepository extends EntityRepository
         return $results->getQuery()->getResult();
     }
 
-    // Soumit par d'autre traité par vous
+    // Retourne des enregistrements traités soumi par vous
     public function listReadSubmitByOther($idUser, $statusPending, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('r')
@@ -211,7 +214,7 @@ class RegistrationRepository extends EntityRepository
         return $results->getQuery()->getResult();
     }
 
-    // Soumit par vous traitée par d'autre
+    // Retourne des enregistrements traités par vous
     public function listReadSubmitByUser($idUser, $statusPending, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('r')
@@ -231,6 +234,7 @@ class RegistrationRepository extends EntityRepository
         return $results->getQuery()->getResult();
     }
 
+    // Retourne 1 ou plus si l'utilisateur à le droit de lire l'enregistrement
     public function canRead($idUser, $idRegistration)
     {
         $qb = $this->createQueryBuilder('r')
@@ -247,6 +251,7 @@ class RegistrationRepository extends EntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    // Retourne le nombre d'enregistrement soumi par l'utilisateur
     public function countSubmitForm($idUser)
     {
         $qb = $this->createQueryBuilder('r')
@@ -259,6 +264,7 @@ class RegistrationRepository extends EntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    // Retourne le nombre de soumission traitées par l'utilisateur
     public function countValidForm($idUser)
     {
         $qb = $this->createQueryBuilder('r')
@@ -271,6 +277,7 @@ class RegistrationRepository extends EntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    // Retourne le nombre d'enregistrement accessible par l'utilisateur
     public function countRegistrationUserCanAccess($idUser)
     {
         $qb = $this->createQueryBuilder('r')
@@ -287,6 +294,7 @@ class RegistrationRepository extends EntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    // Retourne le nombre d'enregistrement accessible par l'utilisateur répondant au critéres (status et qui)
     public function countRegistrationUserCanAccessAjax($idUser, $idStatus, $who)
     {
         $qb = $this->createQueryBuilder('r')

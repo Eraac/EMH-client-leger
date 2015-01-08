@@ -49,32 +49,48 @@ class UserController extends Controller
         // On récupère l'utilisateur courant
         $user = $this->get('security.context')->getToken()->getUser();
 
+        // On récupère le contructeur de formulaire
         $form = $this->get('form.factory')->createBuilder();
 
+        // On ajoute un champs pour le nom
         $form->add('lastName', 'text', array('label' => 'Nom', 'data' => $user->getName()));
+
+        // On ajoute un champs pour le prénom
         $form->add('firstName', 'text', array('label' => 'Prénom', 'data' => $user->getFirstName()));
+
+        // On ajoute un champs pour le nouveau mot de passe de l'utilisateur
         $form->add('password', 'repeated', array('label' => 'Mot de passe', 'required' => false, 'type' => 'password',
                                                 'first_options'  => array('label' => 'Mot de passe', 'attr' => array('help_block' => "Laissez vide pour ne rien changer")),
                                                 'second_options' => array('label' => 'Confirmation')
                                                ));
+
+        // On ajoute un bouton pour valider
         $form->add('Modifier', 'submit', array('attr' => array('class' => "pull-right btn-warning")));
 
+        // On récupère le formulaire
         $form = $form->getForm();
 
+        // On donne la requête au formulaire
         $form->handleRequest($request);
 
+        // Si le formulaire envoyé est valide
         if ($form->isValid())
         {
+            // On récupère les informations
             $setting = $form->getData();
 
+            // On modifie l'utilisateur courant avec les nouvelles informations
             $user->setName($setting['lastName'])
                  ->setFirstName($setting['firstName']);
 
+            // Si le champs mot de passe n'est pas vide
             if (null !== $setting['password'])
             {
+                // On récupère le service qui crypte les mots de passe
                 $factory = $this->container->get('security.encoder_factory');
                 $encoder = $factory->getEncoder($user);
 
+                // On modifie le mot de passe de l'utilisateur
                 $user->setPassword($encoder->encodePassword($setting['password'], $user->getSalt()));
             }
 
@@ -84,6 +100,7 @@ class UserController extends Controller
                 'Modification effectuée'
             );
 
+            // On applique les changements en base de données
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -100,34 +117,46 @@ class UserController extends Controller
     public function forgetPasswordAction(Request $request)
     {
         $error = null;
-        $email = $request->request->get('email');
 
+        // On récupère l'email envoyé en POST
+        $email = $request->request->get('email', null);
+
+        // Si l'email est vide
         if (null !== $email)
         {
+            // On récupère le manager des entités
             $manager = $this->getDoctrine()->getManager();
             $repository = $manager->getRepository('HIAUserBundle:User');
 
+            // On récupère l'utilisateur lié à cette email
             $user = $repository->findOneByUsername($email);
 
+            // Si l'utilisateur est null
             if (null != $user)
             {
+                // On génére un nouveau mot de passe aléatoire
                 $generator = new SecureRandom();
                 $newPassword = bin2hex($generator->nextBytes(10));
 
+                // On récupère le service qui chiffre les mots de passe
                 $factory = $this->container->get('security.encoder_factory');
                 $encoder = $factory->getEncoder($user);
 
+                // On change le mot de passe de l'utilisateur
                 $user->setPassword($encoder->encodePassword($newPassword, $user->getSalt()));
 
+                // On applique les changements en base de données
                 $manager->persist($user);
                 $manager->flush();
 
+                // On créer un email pour lui envoyer le nouveau mot de passe
                 $message = \Swift_Message::newInstance()
                         ->setSubject('Nouveau mot de passe')
                         ->setFrom('contact@hia.com')
                         ->setTo($email)
                         ->setBody("Votre nouveau mot de passe : " . $newPassword);
 
+                // On récupère le service qui envoi des email
                 $this->get('mailer')->send($message);
 
                 // On indique à l'utilisateur que l'enregistrement à fonctionner
@@ -136,16 +165,18 @@ class UserController extends Controller
                     'Nouveau mot de passe envoyé'
                 );
 
+                // On récupère l'URL lié à la route HIACoreIndex
                 $url = $this->get('router')->generate('HIACoreIndex');
 
+                // On redirige l'utilisateur
                 return $this->redirect($url);
             }
             else
             {
+                // On indique que l'email est inexistant
                 $error = "Email inexistant";
             }
         }
-
 
         return array("last_email" => $email, "error" => $error);
     }

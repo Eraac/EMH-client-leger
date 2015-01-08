@@ -13,6 +13,7 @@ class CheckAccess
         $this->_manager = $em;
     }
 
+    // Renvoi un boolen si l'utilisateur à le droit d'utiliser un formulaire
     public function canUse($idUser, $idForm)
     {
         $repoForm = $this->_manager->getRepository("HIAFormBundle:Form");
@@ -22,6 +23,7 @@ class CheckAccess
         return ($hasAccess > 0) ? true : false;
     }
 
+    // Renvoi un boolen si l'utilisateur à le droit de lire un enregistrement
     public function canRead($idUser, $idRegistration)
     {
         $repoRegistration = $this->_manager->getRepository("HIAFormBundle:Registration");

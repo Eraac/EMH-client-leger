@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class FieldRepository extends EntityRepository
 {
+    // Récupère un champs par rapport à un formulaire et un label
     public function getField($idForm, $label)
     {
         $qb = $this->createQueryBuilder('f')

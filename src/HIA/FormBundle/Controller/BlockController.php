@@ -22,7 +22,7 @@ class BlockController extends Controller
         // On récupère le repository de Registration
         $repo = $this->getDoctrine()->getManager()->getRepository('HIAFormBundle:Registration');
 
-        // On récupère la liste des enregistrements des autres non lus
+        // On éxecute la requête
         $listUnreadSubmitByOther = $repo->listUnreadSubmitByOther($idUser, Registration::$_STATUS['PENDING'], $offset, $limit);
 
         return array('list' => $listUnreadSubmitByOther);
@@ -41,6 +41,7 @@ class BlockController extends Controller
         // On récupère le repository de Registration
         $repo = $this->getDoctrine()->getManager()->getRepository('HIAFormBundle:Registration');
 
+        // On éxecute la requête
         $listUnreadSubmitByUser = $repo->listUnreadSubmitByUser($idUser, Registration::$_STATUS['PENDING'], $offset, $limit);
 
         return array('list' => $listUnreadSubmitByUser);
@@ -49,24 +50,7 @@ class BlockController extends Controller
     /**
      * @Template()
      *
-     * Bloc affichant les soumissions des autres utilisateurs traitées
-     */
-    public function readOtherAction($offset, $limit)
-    {
-        // On récupère l'id de l'utilisateur courant
-        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
-
-        // On récupère le repository de Registration
-        $repo = $this->getDoctrine()->getManager()->getRepository('HIAFormBundle:Registration');
-
-        // On récupère la liste des enregistrements des autres lus
-        $listReadSubmitByOther = $repo->listReadSubmitByOther($idUser, Registration::$_STATUS['PENDING'], $offset, $limit);
-
-        return array("list" => $listReadSubmitByOther);
-    }
-
-    /**
-     * @Template()
+     * Bloc affichant la liste des enregistrements traités de l'utilisateur courant
      */
     public function readUserAction($offset, $limit)
     {
@@ -76,7 +60,7 @@ class BlockController extends Controller
         // On récupère le repository de Registration
         $repo = $this->getDoctrine()->getManager()->getRepository('HIAFormBundle:Registration');
 
-        // On récupère la liste des enregistrements de l'utilisateur courant lus
+        // Fait la requête SQL
         $listReadSubmitByUser = $repo->listReadSubmitByUser($idUser, Registration::$_STATUS['PENDING'], $offset, $limit);
 
         return array("list" => $listReadSubmitByUser);
@@ -84,6 +68,8 @@ class BlockController extends Controller
 
     /**
      * @Template()
+     *
+     * Bloc affichant les derniers formulaires utilisés par l'utilisateur courant
      */
     public function lastFormUsedAction($offset, $limit)
     {
@@ -96,7 +82,7 @@ class BlockController extends Controller
         // On récupere le repository de l'entité Registration
         $registrationRepository = $manager->getRepository("HIAFormBundle:Registration");
 
-        // Récupère les derniers formulaires utilisés
+        // On lance la requête
         $lastFormUsed = $registrationRepository->getLastFormUsed($idUser, $offset, $limit);
 
         return array('list' => $lastFormUsed);
@@ -104,12 +90,14 @@ class BlockController extends Controller
 
 	/**
 	 * @Template()
+     *
+     * Bloc affichant le nombre de formulaire envoyés
 	 */
-	public function countSubmitFormAction($idUser, $offset, $limit)
+	public function countSubmitFormAction($idUser)
 	{
-		// Si l'id de l'utilisateur n'est pas donné on la récupère
+		// Si l'id de l'utilisateur n'est pas donné on la prends celle de l'utilisateur courant
 		if (null === $idUser)	
-	        $idUser = $this->get('security.context')->getToken()->getUser()->getId(); 		// On récupère l'id de l'utilisateur courant
+	        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
 
 		// On récupère le manager des entités
         $manager = $this->getDoctrine()->getManager();
@@ -117,20 +105,22 @@ class BlockController extends Controller
         // On récupere le repository de l'entité Registration
         $registrationRepository = $manager->getRepository("HIAFormBundle:Registration");
 
-        // Récupère les derniers formulaires utilisés
-        $number = $registrationRepository->countSubmitForm($idUser, $offset, $limit);
+        // On lance la requête SQL
+        $number = $registrationRepository->countSubmitForm($idUser);
 
 		return array("number" => $number);
 	}
 
 	/**
 	 * @Template()
+     *
+     * Bloc affichant le nombre d'enregistrement traité pour un utilisateur
 	 */
-	public function countValidFormAction($idUser, $offset, $limit)
+	public function countValidFormAction($idUser)
 	{
-		// Si l'id de l'utilisateur n'est pas donné on la récupère
+		// Si l'id de l'utilisateur n'est pas donné on prends celle de l'utilisateur courant
 		if (null === $idUser)	
-	        $idUser = $this->get('security.context')->getToken()->getUser()->getId(); 		// On récupère l'id de l'utilisateur courant
+	        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
 
 		// On récupère le manager des entités
         $manager = $this->getDoctrine()->getManager();
@@ -138,8 +128,8 @@ class BlockController extends Controller
         // On récupere le repository de l'entité Registration
         $registrationRepository = $manager->getRepository("HIAFormBundle:Registration");
 
-        // Récupère les derniers formulaires utilisés
-        $number = $registrationRepository->countValidForm($idUser, $offset, $limit);
+        // On lance la requête SQL
+        $number = $registrationRepository->countValidForm($idUser);
 
 		return array("number" => $number);
 	}

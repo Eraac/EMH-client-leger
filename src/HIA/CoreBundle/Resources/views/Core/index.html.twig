@@ -26,12 +26,12 @@
 
     <div class="col-lg-2 col-xs-6">
 		{# Nombre de formulaires soumit #}
-        {{ render(controller("HIAFormBundle:Block:countSubmitForm", {'idUser': null, 'offset': offset, 'limit': limit})) }}
+        {{ render(controller("HIAFormBundle:Block:countSubmitForm", {'idUser': null})) }}
     </div>
 
     <div class="col-lg-2 col-xs-6">
 		{# Nombre de formulaires traités par l'utilisateur #}
-        {{ render(controller("HIAFormBundle:Block:countValidForm",  {'idUser': null, 'offset': offset, 'limit': limit})) }}
+        {{ render(controller("HIAFormBundle:Block:countValidForm",  {'idUser': null})) }}
     </div>
 
 {% endblock body %}

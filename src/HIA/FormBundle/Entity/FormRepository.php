@@ -13,30 +13,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class FormRepository extends EntityRepository
 {
-    public function getLast($idUser, $offset, $limit)
-    {
-        $qb = $this->createQueryBuilder('f')
-                    ->leftJoin('f.tags', 't')
-                    ->addSelect('t')
-                    ->orderBy('f.dateCreate', 'DESC')
-
-                    ->leftJoin('f.writers', 'g')
-                    ->addSelect('g')
-
-                    ->leftJoin('g.users', 'u')
-                    ->addSelect('u')
-
-                    ->where('u.id = :idUser')
-                    ->setParameter("idUser", $idUser)
-
-                    ->setFirstResult($offset)
-                    ->setMaxResults($limit);
-
-        $results = new Paginator($qb, true);
-
-        return $results->getQuery()->getResult();
-    }
-
+    // Retourne tous les formulaires
     public function getAll($idUser, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('f')
@@ -56,6 +33,7 @@ class FormRepository extends EntityRepository
         return $results->getQuery()->getResult();
     }
 
+    // Retourne tous les formulaires avec des contraintes
     public function getForms($idUser, $formName, $idTags, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('f')
@@ -78,7 +56,8 @@ class FormRepository extends EntityRepository
 
         return $results->getQuery()->getArrayResult();
     }
-    
+
+    // Compte le nombre de formulaire auquel l'utilisateur à accès
     public function countFormUserCanAccess($idUser)
     {
         $qb = $this->createQueryBuilder('f')
@@ -93,6 +72,7 @@ class FormRepository extends EntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    // Compte le nombre de formulaire auquel l'utilisateur à accès selon certains critères
     public function countFormUserCanAccessAjax($idUser, $formName, $idTags)
     {
         $qb = $this->createQueryBuilder('f')
@@ -111,6 +91,7 @@ class FormRepository extends EntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    // Retourne 1 ou plus si l'utilisateur peut utiliser le formulaire
     public function canUse($idUser, $idForm)
     {
         $qb = $this->CreateQueryBuilder('f')

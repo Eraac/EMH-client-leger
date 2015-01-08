@@ -25,12 +25,16 @@ class FormController extends Controller
      */
     public function useFormAction(Form $form, Request $request) // TODO call method repository plus opti
     {
+        // On récupère l'id de l'utilisateur courant
         $idUser = $this->get('security.context')->getToken()->getUser()->getId();
 
+        // On récupère le service pour vérifier l'accès
         $checkAccess = $this->get('hia_checkaccess.hia_checkaccess');
 
+        // Si l'utilisateur n'a pas l'accès
         if (!$checkAccess->canUse($idUser, $form->getId()))
         {
+            // On léve une exceptions
             throw new AccessDeniedException("Vous n'avez pas le droit d'accèder à ce formulaire");
         }
 
@@ -43,7 +47,7 @@ class FormController extends Controller
         // On donne la requête au formulaire
         $htmlForm->handleRequest($request);
 
-        // Le formulaire est valide
+        // Si le formulaire envoyé est valide
         if ($htmlForm->isValid())
         {
             // On recupère le service pour convertir les données en string
@@ -59,7 +63,7 @@ class FormController extends Controller
             $registration = new Registration();
             $registration->setForm($form)                               // On lui indique le formulaire correspondant
                          ->setRegistrationDate(new \DateTime())         // On met la date de soumission
-                         ->setStatus(Registration::$_STATUS['PENDING'])  // On indique le statut de l'enregistrement
+                         ->setStatus(Registration::$_STATUS['PENDING']) // On indique le statut de l'enregistrement
                          ->setUserSubmit($user);                        // On indique l'utilisateur qui à soumit
 
             // On récupère les informations envoyées par le formulaire
@@ -71,14 +75,19 @@ class FormController extends Controller
             // On parcourt la liste des informations envoyées par l'utilisateur
             foreach($datas as $key => $data)
             {
+                // Si l'information est vide on passe
                 if (empty($data))
                 {
-                    continue;
+                    continue; // Passe au prochain
                 }
 
+                // Si la clé est remarque
                 if ($key == "Remarque")
                 {
+                    // On l'ajoute dans l'enregistrement
                     $registration->setUserComment($data);
+
+                    // On passe au prochain
                     continue;
                 }
 
@@ -88,16 +97,27 @@ class FormController extends Controller
                 // Si le field est valide
                 if ($field)
                 {
+                    // On récupère les contraintes du formulaire
                     $constraints = $field->getFieldConstraints();
 
+                    // Si le champs possède la contrainte 'USERPASSWORD'
                     $isUserPassword = false;
 
+                    // On parcourt les contraintes du champs
                     foreach($constraints as $constraint)
+                    {
+                        // Si le champs à la contrainte 'USERPASSWORD'
                         if (FieldConstraint::$_TYPES['USERPASSWORD'] === $constraint->getType())
-                            $isUserPassword = true;
+                        {
+                            $isUserPassword = true; // On l'indique
+                            break; // On quitte la boucle
+                        }
+                    }
 
+                    // Si le champs n'a pas la contrainte USERPASSER
                     if (!$isUserPassword)
                     {
+                        // On regarde si le champs est un choix
                         $isChoice = (Field::$_TYPES['RADIO'] == $field->getType()) ? true : false;
 
                         // On créer un nouvel enregistrement
@@ -111,6 +131,7 @@ class FormController extends Controller
                 }
                 else
                 {
+                    // On lève une exception si un champs n'est pas valide
                     throw new \Exception("Un des champs n'est pas valide");
                 }
             }
@@ -127,8 +148,10 @@ class FormController extends Controller
             // On valide les changements fait à la base de données
             $manager->flush();
 
+            // On récupère l'URL pour la route HIACoreIndex
             $url = $this->get('router')->generate('HIACoreIndex');
 
+            // On redirige l'utilisateur vers la route HIACoreIndex
             return $this->redirect($url);
         }
 
@@ -141,12 +164,16 @@ class FormController extends Controller
      */
     public function readRegistrationAction(Registration $registration)
     {
+        // On récupère l'id du l'utilisateur
         $idUser = $this->get('security.context')->getToken()->getUser()->getId();
 
+        // On récupère le service qui vérifie les accès
         $checkAccess = $this->get('hia_checkaccess.hia_checkaccess');
 
+        // Si l'utilisateur ne peut pas lire l'enregistrement
         if (!$checkAccess->canRead($idUser, $registration->getId()))
         {
+            // On lève une exception
             throw new AccessDeniedException("Vous n'avez pas le droit de lire cette enregistrement");
         }
 
@@ -160,7 +187,10 @@ class FormController extends Controller
      */
     public function validRegistrationAction(Registration $registration, $status)
     {
-        if ($status < 2 OR $status > 4)
+        // Si le status envoyé ne correspond pas à une code connu
+        if ($status != Registration::$_STATUS['VALIDATE'] AND
+            $status != Registration::$_STATUS['ACCEPT'] AND
+            $status != Registration::$_STATUS['REFUSE'])
         {
             $response = new Response("Code inconnu");
             $response->setStatusCode(500);
@@ -168,6 +198,7 @@ class FormController extends Controller
             return $response;
         }
 
+        // Si l'enregistrement n'a pas en statut 'en cours'
         if ($registration->getStatus() != Registration::$_STATUS['PENDING'])
         {
             $response = new Response("Cette enregistrement est déjà validé");
@@ -176,9 +207,12 @@ class FormController extends Controller
             return $response;
         }
 
+        // On récupère le statut du formulaire
         $formStatut = $registration->getForm()->getStatus();
 
-        if ( !(($formStatut == Form::$_STATUS['DEMAND'] AND ($status == Registration::$_STATUS['ACCEPT'] OR $status == Registration::$_STATUS['REFUSE']))
+        // Si le nouveau statut ne correspond pas au type de formulaire
+        if ( !(($formStatut == Form::$_STATUS['DEMAND'] AND
+                ($status == Registration::$_STATUS['ACCEPT'] OR $status == Registration::$_STATUS['REFUSE']) )
             OR
               $formStatut != Form::$_STATUS['DEMAND'] AND $status == Registration::$_STATUS['VALIDATE']))
         {
@@ -188,23 +222,37 @@ class FormController extends Controller
             return $response;
         }
 
+        // On récupère l'utilisateur courant
         $user = $this->get('security.context')->getToken()->getUser();
+
+        // On récupère l'id du l'utilisateur
         $idUser = $user->getId();
 
+        // On récupère le service qui gère les autorisations d'accès aux enregistrements
         $checkAccess = $this->get('hia_checkaccess.hia_checkaccess');
 
+        // Si l'utilisateur n'a pas accès à l'enregistrement ou si l'utilisateur est l'auteur de la soumission
         if (!$checkAccess->canRead($idUser, $registration->getId()) OR $registration->getUserSubmit()->getId() == $idUser)
         {
             throw new AccessDeniedException("Vous n'avez pas le droit de modifier le statut de l'enregistrement");
         }
 
+        // On modifie le statue de l'enregistrement
         $registration->setStatus($status);
+
+        // On indique qui à valider l'enregistrement
         $registration->setUserValidate($user);
+
+        // On indique quand l'utilisateur à valider l'enregistrement
         $registration->setValidationDate(new \DateTime());
 
+        // On récupère le manager des entités
         $manager = $this->getDoctrine()->getManager();
 
+        // On persist l'enregistrement
         $manager->persist($registration);
+
+        // On applique les changements en base de données
         $manager->flush();
 
         // On indique à l'utilisateur que là modification à fonctionné
@@ -213,26 +261,10 @@ class FormController extends Controller
             'Enregistrement modifié'
         );
 
+        // On récupère l'URL de la route HIACoreIndex
         $url = $this->get('router')->generate('HIACoreIndex');
 
+        // On redirige l'utilisateur
         return $this->redirect($url);
-    }
-
-    /**
-     * @Route("/list/unread", name="HIAFormlistUnreadForm")
-     * @Template()
-     */
-    public function listUnreadFormAction()
-    {
-        return array();
-    }
-
-    /**
-     * @Route("/list/read", name="HIAFormlistReadForm")
-     * @Template()
-     */
-    public function listReadFormAction()
-    {
-        return array();
     }
 }
