@@ -68,7 +68,7 @@ class FormRepository extends EntityRepository
                     ->setParameters(array(
                             "idUser" =>  $idUser,
                         ));
-        
+
         return $qb->getQuery()->getSingleScalarResult();
     }
 
@@ -105,5 +105,28 @@ class FormRepository extends EntityRepository
                     ));
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    // Retourne un formulaire complet (groupe associé, champs, contrainte, ...)
+    public function getCompleteForm($slug)
+    {
+        $qb = $this->CreateQueryBuilder('f')
+                    ->leftJoin('f.fields', 'fi')
+                    ->leftJoin('f.tags', 't')
+                    ->leftJoin('fi.defaultValues', 'd')
+                    ->leftJoin('f.readers', 'g')
+                    ->leftJoin('fi.fieldConstraints', 'c')
+                    ->leftJoin('c.params', 'p')
+                    ->select('f')
+                    ->addSelect('fi')
+                    ->addSelect('t')
+                    ->addSelect('d')
+                    ->addSelect('g')
+                    ->addSelect('c')
+                    ->addSelect('p')
+                    ->where('f.slug = :slugForm')
+                    ->setParameter('slugForm', $slug);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

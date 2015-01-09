@@ -247,6 +247,27 @@ class RegistrationRepository extends EntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
+
+    // Retourne un enregistrement complet
+    public function getCompleteRegistration($id)
+    {
+        $qb = $this->CreateQueryBuilder('r')
+                    ->leftJoin('r.form', 'f')
+                    ->leftJoin('r.userSubmit', 'us')
+                    ->leftJoin('r.userValidate', 'uv')
+                    ->leftJoin('r.registers', 're')
+                    ->leftJoin('re.field', 'fi')
+                    ->select('r')
+                    ->addSelect('us')
+                    ->addSelect('uv')
+                    ->addSelect('re')
+                    ->addSelect('f')
+                    ->addSelect('fi')
+                    ->where('r.id = :idRegistration')
+                    ->setParameter('idRegistration', $id);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }
 
 

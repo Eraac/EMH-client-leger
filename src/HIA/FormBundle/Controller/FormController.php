@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\NotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use HIA\FormBundle\Entity\Registration;
@@ -20,11 +21,23 @@ class FormController extends Controller
 {
     /**
      * @Route("/form/{slug}", name="HIAFormUse")
-     * @ParamConverter("HIA\FormBundle\Entity\Form", options={"mapping": {"slug": "slug"}})
      * @Template()
      */
-    public function useFormAction(Form $form, Request $request) // TODO call method repository plus opti
+    public function useFormAction($slug, Request $request)
     {
+        // On récupère le manager des entités
+        $manager = $this->getDoctrine()->getManager();
+
+        // On récupère le formulaire
+        $form = $manager->getRepository('HIAFormBundle:Form')->getCompleteForm($slug);
+
+        // Si le formulaire n'est pas trouvé
+        if (null === $form)
+        {
+            // On lève une exception
+            throw $this->createNotFoundException("Le formulaire n'est pas trouvé");
+        }
+
         // On récupère l'id de l'utilisateur courant
         $idUser = $this->get('security.context')->getToken()->getUser()->getId();
 
@@ -52,9 +65,6 @@ class FormController extends Controller
         {
             // On recupère le service pour convertir les données en string
             $converterToString = $this->get('hia_convert.tostring');
-
-            // On récupère le manager des entités
-            $manager = $this->getDoctrine()->getManager();
 
             // On récupère l'utilisateur courant
             $user = $this->get('security.context')->getToken()->getUser();
@@ -159,11 +169,21 @@ class FormController extends Controller
     }
 
     /**
-     * @Route("/read/{id}", name="HIAFormReadRegistration") // TODO Choisir la requete pour optimiser
+     * @Route("/read/{id}", name="HIAFormReadRegistration")
      * @Template()
      */
-    public function readRegistrationAction(Registration $registration)
+    public function readRegistrationAction($id)
     {
+        // On récupere l'enregistrement
+        $registration = $this->getDoctrine()->getManager()->getRepository('HIAFormBundle:Registration')->getCompleteRegistration($id);
+
+        // Si l'enregistrement n'est pas trouvé
+        if (null === $registration)
+        {
+            // On lève une exception
+            throw $this->createNotFoundException("L'enregistrement n'est pas trouvé");
+        }
+
         // On récupère l'id du l'utilisateur
         $idUser = $this->get('security.context')->getToken()->getUser()->getId();
 

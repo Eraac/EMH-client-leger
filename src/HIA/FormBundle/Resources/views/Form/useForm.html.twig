@@ -1,6 +1,10 @@
 {% extends 'HIACoreBundle::layout.html.twig' %}
 {% form_theme form 'HIACoreBundle::bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block title %}
+{{ formInfo.name }} - {{ parent() }}
+{% endblock %}
+
 {% block body %}
 
 <div class="col-lg-12">
