@@ -77,13 +77,24 @@ class LoadForm implements FixtureInterface, OrderedFixtureInterface
         $fieldIsRequired = array(true, true, true, true, false, true, true, true);
 
         $fieldLabelField = array(
-            "Pourquoi",
-            "Quantite",
-            "Pourquoi",
-            "Debut",
-            "Jours",
-            "Commentaire",
-            "NonMultiple",
+            "what",
+            "quantity",
+            "why",
+            "start",
+            "countday",
+            "comment",
+            "notMultiple",
+            "multiple"
+        );
+
+        $fieldLabelHuman = array(
+            "Raison",
+            "La quantité",
+            "Pourquoi ?",
+            "Date de début",
+            "Nombre de jours",
+            "Commentaires",
+            "Non multiple",
             "Multiple"
         );
 
@@ -111,7 +122,7 @@ class LoadForm implements FixtureInterface, OrderedFixtureInterface
 
         $listFields = array();
 
-        $fieldMethodName = array("Type", "Multiple", "LabelField", "IsRequired", "Placeholder", "HelpText");
+        $fieldMethodName = array("Type", "Multiple", "LabelField", "LabelHuman","IsRequired", "Placeholder", "HelpText");
 
         // On hydrate les forms
         for($i = 0; $i < 4; $i++)

@@ -32,6 +32,7 @@ class FormBuilder
             $options['required']    = $field->getIsRequired();
             $options['constraints'] = $this->getConstraints($field->getFieldConstraints());
             $options['attr']        = array('help_block' => $field->getHelpText());
+            $options['label']       = $field->getLabelHuman();
             
             if ("choice" == $type)
             {
@@ -58,7 +59,7 @@ class FormBuilder
             $htmlForm->add($label, $type, $options);
         }
 
-        $htmlForm->add("Remarque", "textarea", array('attr' => array('help_block' => "Une remarque générale sur votre enregistrement, si cela est nécessaire."), 'required' => false));
+        $htmlForm->add("remarque", "textarea", array('label' => "Remarque", 'attr' => array('help_block' => "Une remarque générale sur votre enregistrement, si cela est nécessaire."), 'required' => false));
         $htmlForm->add("Envoyer", "submit", array('attr' => array('class' => "pull-right btn-success")));
 
         return $htmlForm;

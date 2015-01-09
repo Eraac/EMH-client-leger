@@ -394,27 +394,4 @@ class Field
     {
         return $this->defaultValues;
     }
-
-    /**
-     * Set labelHuman
-     *
-     * @param string $labelHuman
-     * @return Field
-     */
-    public function setLabelHuman($labelHuman)
-    {
-        $this->labelHuman = $labelHuman;
-
-        return $this;
-    }
-
-    /**
-     * Get labelHuman
-     *
-     * @return string 
-     */
-    public function getLabelHuman()
-    {
-        return $this->labelHuman;
-    }
 }

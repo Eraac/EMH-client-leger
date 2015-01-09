@@ -92,7 +92,7 @@ class FormController extends Controller
                 }
 
                 // Si la clé est remarque
-                if ($key == "Remarque")
+                if ($key == "remarque")
                 {
                     // On l'ajoute dans l'enregistrement
                     $registration->setUserComment($data);
