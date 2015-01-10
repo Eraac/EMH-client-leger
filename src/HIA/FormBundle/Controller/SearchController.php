@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-define ("ITEM_PER_PAGE", 200); // TODO [BUG] 
+define ("ITEM_PER_PAGE", 20); // TODO [BUG] Le nombre n'est pas bon
 
 class SearchController extends Controller
 {
