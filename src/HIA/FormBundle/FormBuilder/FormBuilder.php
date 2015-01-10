@@ -22,6 +22,7 @@ class FormBuilder
 
         $fields = $form->getFields();
 
+        // TODO [BUG] Les champs ne sont pas dans le même ordre que la base de données
         foreach ($fields as $field)
         {
             $type       = $field->getHtmlType();
@@ -43,7 +44,7 @@ class FormBuilder
                 
                 $defaultValues = $field->getDefaultValues();
                 
-                foreach ($defaultValues as $key => $defaultValue)
+                foreach ($defaultValues as $defaultValue)
                 {
                     $options['choices'][$defaultValue->getId()] = $defaultValue->getValue();
                 }

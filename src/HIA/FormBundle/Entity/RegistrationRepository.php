@@ -24,7 +24,7 @@ class RegistrationRepository extends EntityRepository
                     ->leftJoin('g.users', 'u')
                     ->addSelect('f')
                     ->addSelect('us')
-                    ->orderBy('r.registrationDate', 'ASC')
+                    ->orderBy('r.registrationDate', 'DESC')
                                         
                     ->where('r.status IN (:idStatus)')
                     ->setParameters(array(                        
@@ -62,7 +62,7 @@ class RegistrationRepository extends EntityRepository
                     ->leftJoin('g.users', 'u')
                     ->addSelect('f')
                     ->addSelect('us')
-                    ->orderBy('r.registrationDate', 'ASC')
+                    ->orderBy('r.registrationDate', 'DESC')
 
                     ->where('u.id = :idUser OR us.id = :idUser')
 
@@ -142,7 +142,7 @@ class RegistrationRepository extends EntityRepository
             ->leftJoin('r.form', 'f')
             ->addSelect('f')
             ->where('r.status != :statusPending AND r.userSubmit = :idUser')
-            ->orderBy("r.validationDate", 'ASC')
+            ->orderBy("r.validationDate", 'DESC')
             ->setParameters(array(
                 'statusPending' => $statusPending,
                 'idUser'        => $idUser

@@ -282,7 +282,7 @@ class FormController extends Controller
         );
 
         // On récupère l'URL de la route HIACoreIndex
-        $url = $this->get('router')->generate('HIACoreIndex');
+        $url = $this->get('router')->generate('HIAFormReadRegistration', array('id' => $registration->getId()));
 
         // On redirige l'utilisateur
         return $this->redirect($url);

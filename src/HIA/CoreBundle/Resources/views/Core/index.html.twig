@@ -1,6 +1,6 @@
 {% extends 'HIACoreBundle::layout.html.twig' %}
 
-{% set offset, limit = 0, 10 %}
+{% set offset, limit = 0, 5 %}
 
 {% block body %}
     <div class="col-lg-12">
@@ -9,19 +9,23 @@
         </div>
     </div>
 
-    <div class="col-lg-4">
-        {# Liste des derniers formulaires utilisé #}
-        {{ render(controller("HIAFormBundle:Block:lastFormUsed", {'offset': offset, 'limit': limit})) }}
-    </div>
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-4">
+                {# Liste des derniers formulaires utilisé #}
+                {{ render(controller("HIAFormBundle:Block:lastFormUsed", {'offset': offset, 'limit': limit})) }}
+            </div>
 
-    <div class="col-lg-4">
-        {# Liste des soumissions envoyé par les autres que vous avez le droit de lire et non traitée #}
-        {{ render(controller("HIAFormBundle:Block:unreadOther", {'offset': offset, 'limit': limit})) }}
-    </div>
+            <div class="col-lg-4">
+                {# Liste des soumissions envoyé par les autres que vous avez le droit de lire et non traitée #}
+                {{ render(controller("HIAFormBundle:Block:unreadOther", {'offset': offset, 'limit': limit})) }}
+            </div>
 
-    <div class="col-lg-4">
-        {# Liste des soumissions par vous qui sont traitées #}
-        {{ render(controller("HIAFormBundle:Block:readUser", {'offset': offset, 'limit': limit})) }}
+            <div class="col-lg-4">
+                {# Liste des soumissions par vous qui sont traitées #}
+                {{ render(controller("HIAFormBundle:Block:readUser", {'offset': offset, 'limit': limit})) }}
+            </div>
+        </div>
     </div>
 
     <div class="col-lg-2 col-xs-6">

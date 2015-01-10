@@ -211,7 +211,6 @@ class LoadForm implements FixtureInterface, OrderedFixtureInterface
         $listForms[2]->addWriter($groupPatient);
         
         $listForms[3]->addReader($groupAdministration);
-        $listForms[3]->addWriter($groupPatient);
         
         // On déclenche l'enregistrement
         $manager->flush();
