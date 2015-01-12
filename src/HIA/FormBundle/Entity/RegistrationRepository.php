@@ -25,16 +25,16 @@ class RegistrationRepository extends EntityRepository
                     ->addSelect('f')
                     ->addSelect('us')
                     ->orderBy('r.registrationDate', 'DESC')
-                                        
+
                     ->where('r.status IN (:idStatus)')
-                    ->setParameters(array(                        
+                    ->setParameters(array(
                         "idUser" => $idUser,
                         "idStatus" => $idStatus
                     ))
 
                     ->setFirstResult($offset)
                     ->setMaxResults($limit);
-                
+
                     if ($who['submitByUser'] AND !$who['submitByOther']) {
                         $qb->andWhere('us.id = :idUser');
                     } else if (!$who['submitByUser'] AND $who['submitByOther']) {
@@ -75,6 +75,22 @@ class RegistrationRepository extends EntityRepository
         return $results->getQuery()->getResult();
     }
 
+    // Retourne le nombre d'enregistrement non traités des autres utilisateurs
+    public function countUnreadSubmitByOther($idUser)
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->select('COUNT(r)')
+            ->leftJoin('r.form', 'f')
+            ->leftJoin('f.readers', 'g')
+            ->leftJoin('g.users', 'u')
+            ->where('r.userValidate is NULL AND u.id = :idUser AND r.userSubmit != :idUser')
+            ->setParameters(array(
+                'idUser'        => $idUser
+            ));
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
     // Retourne les derniers formulaires utilisés par l'utilisateur
     public function getLastFormUsed($idUser, $offset, $limit)
     {
@@ -95,24 +111,8 @@ class RegistrationRepository extends EntityRepository
         return $results->getQuery()->getResult();
     }
 
-    // Retourne le nombre d'enregistrement non traités des autres utilisateurs
-    public function countUnreadSubmitByOther($idUser)
-    {
-        $qb = $this->createQueryBuilder('r')
-                    ->select('COUNT(r)')
-                    ->leftJoin('r.form', 'f')
-                    ->leftJoin('f.readers', 'g')
-                    ->leftJoin('g.users', 'u')
-					->where('r.userValidate is NULL AND u.id = :idUser AND r.userSubmit != :idUser')
-                    ->setParameters(array(
-                        'idUser'        => $idUser
-                    ));
-
-        return $qb->getQuery()->getSingleScalarResult();
-    }
-
-    // Retourne des enregistrements que vous avez le droit de lire non soumit par vous
-    public function listUnreadSubmitByOther($idUser, $statusPending, $offset, $limit)
+    // Retourne des enregistrements non traité que vous avez le droit de lire non soumit par vous
+    public function listUnreadSubmitByOther($idUser, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('r')
             ->leftJoin('r.form', 'f')
@@ -122,10 +122,9 @@ class RegistrationRepository extends EntityRepository
             ->leftJoin('f.readers', 'g')
             ->leftJoin('g.users', 'u')
             ->orderBy("r.registrationDate", 'ASC')
-            ->where('r.status = :statusPending AND u.id = :idUser AND r.userSubmit != :idUser')
+            ->where('r.userValidate is null AND u.id = :idUser AND r.userSubmit != :idUser')
             ->setParameters(array(
-                'statusPending' => $statusPending,
-                'idUser'        => $idUser
+                'idUser'    => $idUser
             ))
             ->setFirstResult($offset)
             ->setMaxResults($limit);
@@ -136,15 +135,14 @@ class RegistrationRepository extends EntityRepository
     }
 
     // Retourne des enregistrements traités soumi par vous
-    public function listReadSubmitByUser($idUser, $statusPending, $offset, $limit)
+    public function listReadSubmitByUser($idUser, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('r')
             ->leftJoin('r.form', 'f')
             ->addSelect('f')
-            ->where('r.status != :statusPending AND r.userSubmit = :idUser')
+            ->where('r.userValidate is not null AND r.userSubmit = :idUser')
             ->orderBy("r.validationDate", 'DESC')
             ->setParameters(array(
-                'statusPending' => $statusPending,
                 'idUser'        => $idUser
             ))
             ->setFirstResult($offset)

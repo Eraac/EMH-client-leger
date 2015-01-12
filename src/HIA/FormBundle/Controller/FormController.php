@@ -71,10 +71,10 @@ class FormController extends Controller
 
             // On instancie une nouvelle inscription
             $registration = new Registration();
-            $registration->setForm($form)                               // On lui indique le formulaire correspondant
-                         ->setRegistrationDate(new \DateTime())         // On met la date de soumission
-                         ->setStatus(Registration::$_STATUS['PENDING']) // On indique le statut de l'enregistrement
-                         ->setUserSubmit($user);                        // On indique l'utilisateur qui à soumit
+            $registration->setForm($form)                           // On lui indique le formulaire correspondant
+                         ->setRegistrationDate(new \DateTime())     // On met la date de soumission
+                         ->setStatus(Registration::$_STATUS['NEW']) // On indique le statut de l'enregistrement
+                         ->setUserSubmit($user);                    // On indique l'utilisateur qui à soumit
 
             // On récupère les informations envoyées par le formulaire
             $datas = $htmlForm->getData();
@@ -207,8 +207,17 @@ class FormController extends Controller
      */
     public function validRegistrationAction(Registration $registration, $status)
     {
+        // TODO Vérifier page 500 pour ici
+
+        // On récupère l'utilisateur courant
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        // On récupère l'id du l'utilisateur
+        $idUser = $user->getId();
+
         // Si le status envoyé ne correspond pas à une code connu
-        if ($status != Registration::$_STATUS['VALIDATE'] AND
+        if ($status != Registration::$_STATUS['PENDING'] AND
+            $status != Registration::$_STATUS['VALIDATE'] AND
             $status != Registration::$_STATUS['ACCEPT'] AND
             $status != Registration::$_STATUS['REFUSE'])
         {
@@ -218,10 +227,11 @@ class FormController extends Controller
             return $response;
         }
 
-        // Si l'enregistrement n'a pas en statut 'en cours'
-        if ($registration->getStatus() != Registration::$_STATUS['PENDING'])
+        // Si l'enregistrement n'a pas en statut 'nouveau'
+        if ($registration->getStatus() != Registration::$_STATUS['NEW'] AND
+            $registration->getUserValidate()->getId() != $idUser)
         {
-            $response = new Response("Cette enregistrement est déjà validé");
+            $response = new Response("Cette enregistrement est déjà pris en charge");
             $response->setStatusCode(500);
 
             return $response;
@@ -231,22 +241,18 @@ class FormController extends Controller
         $formStatut = $registration->getForm()->getStatus();
 
         // Si le nouveau statut ne correspond pas au type de formulaire
-        if ( !(($formStatut == Form::$_STATUS['DEMAND'] AND
-                ($status == Registration::$_STATUS['ACCEPT'] OR $status == Registration::$_STATUS['REFUSE']) )
-            OR
-              $formStatut != Form::$_STATUS['DEMAND'] AND $status == Registration::$_STATUS['VALIDATE']))
+        if (($formStatut != Form::$_STATUS['DEMAND'] AND ($status == Registration::$_STATUS['ACCEPT'] OR $status == Registration::$_STATUS['REFUSE'])
+                OR
+            $formStatut == Form::$_STATUS['DEMAND'] AND $status == Registration::$_STATUS['VALIDATE'])
+                AND
+            $status != Registration::$_STATUS['PENDING']
+        )
         {
             $response = new Response("Action impossible");
             $response->setStatusCode(500);
 
             return $response;
         }
-
-        // On récupère l'utilisateur courant
-        $user = $this->get('security.context')->getToken()->getUser();
-
-        // On récupère l'id du l'utilisateur
-        $idUser = $user->getId();
 
         // On récupère le service qui gère les autorisations d'accès aux enregistrements
         $checkAccess = $this->get('hia_checkaccess.hia_checkaccess');

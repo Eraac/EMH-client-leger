@@ -23,7 +23,7 @@ class BlockController extends Controller
         $repo = $this->getDoctrine()->getManager()->getRepository('HIAFormBundle:Registration');
 
         // On éxecute la requête
-        $listUnreadSubmitByOther = $repo->listUnreadSubmitByOther($idUser, Registration::$_STATUS['PENDING'], $offset, $limit);
+        $listUnreadSubmitByOther = $repo->listUnreadSubmitByOther($idUser, $offset, $limit);
 
         return array('list' => $listUnreadSubmitByOther);
     }
@@ -42,7 +42,7 @@ class BlockController extends Controller
         $repo = $this->getDoctrine()->getManager()->getRepository('HIAFormBundle:Registration');
 
         // Fait la requête SQL
-        $listReadSubmitByUser = $repo->listReadSubmitByUser($idUser, Registration::$_STATUS['PENDING'], $offset, $limit);
+        $listReadSubmitByUser = $repo->listReadSubmitByUser($idUser, $offset, $limit);
 
         return array("list" => $listReadSubmitByUser);
     }
@@ -117,6 +117,8 @@ class BlockController extends Controller
 
     /**
      * Template()
+     *
+     * Affiche le nombre de soumission restante à traiter
      */
     public function countUnreadSubmitByOtherAction()
     {

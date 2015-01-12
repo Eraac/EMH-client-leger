@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Registration
 {
-    public static $_STATUS = array("PENDING" => 1, "VALIDATE" => 2, "ACCEPT" => 3, "REFUSE" => 4);
+    public static $_STATUS = array("NEW" => 1, "PENDING" => 2, "VALIDATE" => 3, "ACCEPT" => 4, "REFUSE" => 5);
 
     /**
      * @var integer
@@ -282,6 +282,11 @@ class Registration
     public function getRegisters()
     {
         return $this->registers;
+    }
+
+    public function isNew()
+    {
+        return ($this->status == self::$_STATUS['NEW']);
     }
 
     public function isPending()

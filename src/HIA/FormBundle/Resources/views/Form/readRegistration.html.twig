@@ -1,7 +1,9 @@
 {% extends 'HIACoreBundle::layout.html.twig' %}
 
 {% block title %}
-    {% if registration.pending %}
+    {% if registration.new %}
+        [Nouveau]
+    {% elseif registration.pending %}
         [En cours]
     {% elseif registration.validate %}
         [Validé]
@@ -20,21 +22,27 @@
         <div class="col-lg-10">
             <div class="page-header" style="border-color: #{{ registration.form.color }};">
                 <h1 class="text-success">{{ registration.form.name }}
-                    {% if registration.pending %}
+                    {% if registration.new %}
+                        <span class="label label-info">Nouveau</span>
+                    {% elseif registration.pending %}
                         <span class="label label-info">En cours</span>
                     {% elseif registration.validate %}
-                        <span class="label label-primary">Validé</span><small> par {{ registration.userValidate.fullName }}</small>
+                        <span class="label label-primary">Validé</span>
                     {% elseif registration.accept %}
-                        <span class="label label-success">Accepté</span><small> par {{ registration.userValidate.fullName }}</small>
+                        <span class="label label-success">Accepté</span>
                     {% elseif registration.refuse %}
-                        <span class="label label-danger">Refusé</span><small> par {{ registration.userValidate.fullName }}</small>
+                        <span class="label label-danger">Refusé</span>
+                    {% endif %}
+
+                    {% if not registration.new %}
+                        <small> par {{ registration.userValidate.fullName }}</small>
                     {% endif %}
                 </h1>
             </div>
         </div>
 
         <div class="hidden-sm hidden-xs hidden-md col-lg-2 text-center">
-            <img class="miniHIA" alt="..." src="/img/HIA.png">
+            <img class="miniHIA" src="/img/HIA.png">
         </div>
 
     </div>
@@ -43,9 +51,16 @@
 <div class="col-lg-12">
     <div class="row">
 
-        {% if (registration.userComment) and ((registration.userSubmit.id != app.user.id) and (registration.status == "1")) %}
+        {# registration.userSubmit.id != app.user.id and ((registration.pending and registration.userValidate.id == app.user.id) or registration.new) #}
+        {# équivalent à "si on peut changer son status" #}
+
+        {% if registration.userComment and registration.userSubmit.id != app.user.id and ((registration.pending and registration.userValidate.id == app.user.id) or registration.new) %}
             {% set class = "col-lg-4 col-md-4 col-sm-6" %}
-        {% elseif (registration.userComment) or ((registration.userSubmit.id != app.user.id) and (registration.status == "1")) %}
+        {% elseif
+            (registration.userComment == null and registration.userSubmit.id != app.user.id and ((registration.pending and registration.userValidate.id == app.user.id) or registration.new) )
+                or
+            registration.userComment and not (registration.userSubmit.id != app.user.id and ((registration.pending and registration.userValidate.id == app.user.id) or registration.new))
+        %}
             {% set class = "col-lg-6 col-md-6 col-sm-12" %}
         {% else %}
             {% set class = "col-lg-12" %}
@@ -102,7 +117,7 @@
         </div>
         {% endif %}
 
-        {% if (registration.userSubmit.id != app.user.id) and (registration.status == "1") %}
+        {% if (registration.userSubmit.id != app.user.id and ((registration.pending and registration.userValidate.id == app.user.id) or registration.new)) %}
         <!-- Action -->
         <div class="{{ class }}">
             <div class="panel panel-success">
@@ -111,10 +126,14 @@
                 </div>
                 <div class="panel-body">
                 {% if registration.form.isDemand %}
-                    <a href="{{ path("HIAFormValidRegistration", {'id': registration.id, 'status': 3}) }}" class="btn btn-success btn-block">Accepter</a>
-                    <a href="{{ path("HIAFormValidRegistration", {'id': registration.id, 'status': 4}) }}" class="btn btn-danger btn-block">Refuser</a>
+                    <a href="{{ path("HIAFormValidRegistration", {'id': registration.id, 'status': 4}) }}" class="btn btn-success btn-block">Accepter</a>
+                    <a href="{{ path("HIAFormValidRegistration", {'id': registration.id, 'status': 5}) }}" class="btn btn-danger btn-block">Refuser</a>
                 {% else %}
-                    <a href="{{ path("HIAFormValidRegistration", {'id': registration.id, 'status': 2}) }}" class="btn btn-primary btn-block">Valider</a>
+                    <a href="{{ path("HIAFormValidRegistration", {'id': registration.id, 'status': 3}) }}" class="btn btn-primary btn-block">Valider</a>
+                {% endif %}
+
+                {% if registration.new %}
+                    <a href="{{ path("HIAFormValidRegistration", {'id': registration.id, 'status': 2}) }}" class="btn btn-info btn-block">Prendre en charge</a>
                 {% endif %}
                 </div>
             </div>

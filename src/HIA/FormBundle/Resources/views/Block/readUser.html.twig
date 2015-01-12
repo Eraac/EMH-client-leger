@@ -9,7 +9,9 @@
         <a href="{{ path('HIAFormReadRegistration', {'id': submit.id}) }}" class="list-group-item">
             <h4 class="list-group-item-heading">{{ submit.form.name }} <small>le {{ submit.registrationDate|date("d-m-Y à H:i") }} par vous</small></h4>
             <p class="list-group-item-text">
-                {% if submit.pending %}
+                {% if submit.new %}
+                    <span class="label label-info">Nouveau</span>
+                {% elseif submit.pending %}
                     <span class="label label-info">En cours</span>
                 {% elseif submit.validate %}
                     <span class="label label-primary">Validé</span>
