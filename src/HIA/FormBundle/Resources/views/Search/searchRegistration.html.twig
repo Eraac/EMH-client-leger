@@ -8,10 +8,11 @@
     </div>
 
     <div class="col-lg-12 text-center">
-        <h3 class="inline"><span data-class="label-info" id="1" class="selectableStatus hoveractive label label-info selectableTag">En cours</span></h3>
-        <h3 class="inline"><span data-class="label-primary" id="2" class="selectableStatus hoveractive label label-primary selectableTag">Validé</span></h3>
-        <h3 class="inline"><span data-class="label-success" id="3" class="selectableStatus hoveractive label label-success selectableTag">Accepté</span></h3>
-        <h3 class="inline"><span data-class="label-danger" id="4" class="selectableStatus hoveractive label label-danger selectableTag">Refusé</span></h3>
+        <h3 class="inline"><span data-class="label-info" id="1" class="selectableStatus hoveractive label label-info selectableTag">Nouveau</span></h3>
+        <h3 class="inline"><span data-class="label-info" id="2" class="selectableStatus hoveractive label label-info selectableTag">En cours</span></h3>
+        <h3 class="inline"><span data-class="label-primary" id="3" class="selectableStatus hoveractive label label-primary selectableTag">Validé</span></h3>
+        <h3 class="inline"><span data-class="label-success" id="4" class="selectableStatus hoveractive label label-success selectableTag">Accepté</span></h3>
+        <h3 class="inline"><span data-class="label-danger" id="5" class="selectableStatus hoveractive label label-danger selectableTag">Refusé</span></h3>
     </div>
     
     <div class="col-lg-12 text-center">
@@ -60,14 +61,17 @@
                     <td>{{ registration.userSubmit.fullName }}</td>
                     <td>
                         {% if registration.pending %}
-                            <span class="label label-info">En cours</span>
+                            {% set class, value = "info", "En cours" %}
+                        {% elseif registration.new %}
+                            {% set class, value = "info", "Nouveau" %}
                         {% elseif registration.validate %}
-                            <span class="label label-primary">Validé</span>
+                            {% set class, value = "primary", "Validé" %}
                         {% elseif registration.accept %}
-                            <span class="label label-success">Accepté</span>
+                            {% set class, value = "success", "Accepté" %}
                         {% elseif registration.refuse %}
-                            <span class="label label-danger">Refusé</span>
+                            {% set class, value = "danger", "Refusé" %}
                         {% endif %}
+                        <span class="label label-{{ class }}">{{ value }}</span>
                     </td>
                     <td>{{ registration.registrationDate|date("d-m-Y à H:i") }}</td>
                     <td class="text-center"><a href="{{ path('HIAFormReadRegistration', {'id': registration.id}) }}"><span class="glyphicon glyphicon-search"></span></a></td>

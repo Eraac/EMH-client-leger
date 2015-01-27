@@ -18,7 +18,7 @@ function searchForm()
     var url = window.location.href;
     var countForms = changeOption ? 0 : $("#listForm .formHIA").length;
 
-    //console.log("Change option : " + changeOption); // FALSE ALORS QU'ELLE DOIT ETRE TRUE (ligne 99)
+    //console.log("Change option : " + changeOption);
     //console.log("Count form : " + countForms);
 
     // TODO Add loader
@@ -42,7 +42,11 @@ function searchForm()
 
             if (0 >= datas['forms'].length)
             {
-                // TODO Add notification pour dire que rien d'autre n'est disponible
+                if (changeOption) {
+                    // TODO Add Si option changé mettre une ligne "no result"
+                } else {
+                    // TODO Add Si option inchangé notification pour dire que rien d'autre n'est disponible
+                }
             }
             else
             {
