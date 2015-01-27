@@ -211,6 +211,23 @@ class LoadForm implements FixtureInterface, OrderedFixtureInterface
         $listForms[2]->addWriter($groupPatient);
         
         $listForms[3]->addReader($groupAdministration);
+
+        for ($i = 0; $i < 100; $i++)
+        {
+            $form = new Form();
+            $form->setName("Form n°" . $i)
+                ->setDescription("Description")
+                ->setInfo("Info")
+                ->setImportant("Important")
+                ->setColor("222222")
+                ->setStatus(Form::$_STATUS['DEMAND'])
+                ->setDateCreate(new \DateTime())
+                ->setAuthor($userAdministratif)
+                ->addReader($groupPatient)
+                ->addWriter($groupPatient);
+
+            $manager->persist($form);
+        }
         
         // On déclenche l'enregistrement
         $manager->flush();

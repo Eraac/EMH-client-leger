@@ -24,7 +24,6 @@ class FormRepository extends EntityRepository
                     ->leftJoin('g.users', 'u')
                     ->where('u.id = :idUser')
                     ->setParameter("idUser", $idUser)
-
                     ->setFirstResult($offset)
                     ->setMaxResults($limit);
 

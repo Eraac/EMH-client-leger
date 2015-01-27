@@ -20,7 +20,7 @@ class LoadTag implements FixtureInterface, OrderedFixtureInterface
         $demandeBequilles   = $repoForm->find(2);
         $avisHopital        = $repoForm->find(3);
 
-        $tagNames = array("Demande", "Urgent", "Informatif");
+        $tagNames = array("Demande", "Urgent", "Informatif", "Test");
         $listTags = array();
 
         foreach($tagNames as $tagName)
@@ -35,6 +35,13 @@ class LoadTag implements FixtureInterface, OrderedFixtureInterface
         $demandeMorphine->addTag($listTags[1]); // Urgent
         $demandeBequilles->addTag($listTags[0]); // Demande
         $avisHopital->addTag($listTags[2]); // Informatif
+
+        $allForms = $repoForm->findAll();
+
+        foreach($allForms as $form)
+        {
+            $form->addTag($listTags[3]);
+        }
 
         // On déclenche l'enregistrement
         $manager->flush();

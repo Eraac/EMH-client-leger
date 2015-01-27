@@ -15,15 +15,11 @@ define ("ITEM_PER_PAGE", 20); // TODO [BUG] Le nombre n'est pas bon
 class SearchController extends Controller
 {
     /**
-     * @Route("/search/form/{page}", name="HIAFormSearchAjax",
-     *      requirements={"page" = "\d+"}, defaults={"page" = 1})
+     * @Route("/search/form", name="HIAFormSearchAjax")
      * @Method({"POST"})
      */
-    public function searchFormAjaxAction(Request $request, $page) // Uniquement si la requête est en Ajax
+    public function searchFormAjaxAction(Request $request) // Uniquement si la requête est en Ajax
     {
-        // On repasse sur la page 1
-        $page = 1;
-
         // On récupère l'id de l'utilisateur courant
         $idUser = $this->get('security.context')->getToken()->getUser()->getId();
 
@@ -33,6 +29,9 @@ class SearchController extends Controller
         // On récupère la valeur POST 'idTag'
         $idTags = $request->request->get("idTag");
 
+        // On récupère la valeur POST 'nbForms'
+        $nbForms = $request->request->get("nbForms");
+
         // On récupère le manager pour les entités
         $manager = $this->getDoctrine()->getManager();
 
@@ -40,23 +39,20 @@ class SearchController extends Controller
         $formRepository = $manager->getRepository("HIAFormBundle:Form");
 
         // On récuperer les formulaires qui répondent aux critéres
-        $listForms = $formRepository->getForms($idUser, $formName, $idTags, ($page - 1) * ITEM_PER_PAGE, ITEM_PER_PAGE * $page);
+        $listForms = $formRepository->getForms($idUser, $formName, $idTags, $nbForms, ITEM_PER_PAGE);
 
-        // On récupère le nombre de formulaire pour savoir si il reste des pages
-        $countForm = $formRepository->countFormUserCanAccessAjax($idUser, $formName, $idTags);
-
-        $response = array('forms' => $listForms, 'hasNext' => ($countForm > ITEM_PER_PAGE));
+        $response = array('forms' => $listForms);
 
         // On retourne une réponse en JSON
         return new JsonResponse($response);
     }
 
     /**
-     * @Route("/search/form/{page}", name="HIAFormSearch", requirements={"page" = "\d+"}, defaults={"page" = 1}))
+     * @Route("/search/form", name="HIAFormSearch")
      * @Method({"GET"})
      * @Template()
      */
-    public function searchFormAction($page)
+    public function searchFormAction()
     {
         // On récupère l'id de l'utilisateur courant
         $idUser = $this->get('security.context')->getToken()->getUser()->getId();
@@ -74,14 +70,9 @@ class SearchController extends Controller
         $listTags = $tagRepository->findAll();
 
         // On récupère la liste de formulaire (limité à 20)
-        $listForms = $formRepository->getAll($idUser, ($page - 1) * ITEM_PER_PAGE, ITEM_PER_PAGE * $page);
-        
-        // On récupère le nombre de formulaire pour savoir si il reste des pages
-        $countForm = $formRepository->countFormUserCanAccess($idUser);
-        
-        $end = ($countForm <= ITEM_PER_PAGE * $page) ? true : false;
+        $listForms = $formRepository->getAll($idUser, 0, ITEM_PER_PAGE);
 
-        return array("tags" => $listTags, "forms" => $listForms, "page" => $page, "end" => $end);
+        return array("tags" => $listTags, "forms" => $listForms);
     }
     
     

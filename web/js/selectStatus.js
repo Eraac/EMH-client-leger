@@ -38,6 +38,7 @@ function removeSelectedValid(id)
 function searchRegistration()
 {
     var url = window.location.href;
+
     
     // TODO loader
     $.ajax({

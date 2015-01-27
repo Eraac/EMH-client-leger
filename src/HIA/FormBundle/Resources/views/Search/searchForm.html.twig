@@ -35,7 +35,7 @@
             
             <tbody id="listForm">
                 {% for form in forms %}
-                <tr>
+                <tr class="formHIA">
                     <td>{{ form.name }}</td>
                     <td>
                         {% for tag in form.tags %}
@@ -53,37 +53,7 @@
         </table>
 
     </div>
-                
-    <nav class="text-center">
-        <ul class="pagination">
-            
-            {% if page > 1 %}
-            <li class="previous-page">
-                <a href="{{ path("HIAFormSearch", {'page': page - 1}) }}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
 
-            <li class="page"><a href="{{ path("HIAFormSearch", {'page': page - 1}) }}">{{ page - 1 }}</a></li>
-            {% else %}
-            <li class="previous-page disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-            {% endif %}
-            
-            <li class="page active"><a href="#">{{ page }} <span class="sr-only">(current)</span></a></li>
-    
-            {% if not end %}
-            <li class="page"><a href="{{ path("HIARegistrationSearch", {'page': page + 1}) }}">{{ page + 1 }}</a></li>
-
-            <li class="next-page">
-                <a href="{{ path("HIAFormSearch", {'page': page + 1}) }}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-            {% else %}
-            <li class="disabled next-page"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
-            {% endif %}
-        </ul>
-    </nav>
 {% endblock body %}
 
 {% block css %}

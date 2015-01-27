@@ -15,6 +15,8 @@ function searchForm()
 {
     var textToSearch = $("#formName").val();
     var url = window.location.href;
+    var countForms = $("#listForm .formHIA").length;
+
     // TODO loader
     $.ajax({
         type: 'POST',
@@ -22,12 +24,13 @@ function searchForm()
         url: url,
         data:{
             idTag : selectedTags,
-            formName : textToSearch
+            formName : textToSearch,
+            nbForms: countForms
         },
         success: function (datas){
             //console.log(datas);
 
-            $("#listForm").html("");
+            //$("#listForm").html("");
 
             var response = "";
 
@@ -39,7 +42,7 @@ function searchForm()
             {
                 for(i in datas['forms'])
                 {
-                    response += "<tr>";
+                    response += "<tr class=\"formHIA\">";
                     response +=  "<td>" + datas['forms'][i]['name'] + "</td>";
                     response +=  "<td>";
 
