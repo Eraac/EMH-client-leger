@@ -47,7 +47,7 @@ class UserController extends Controller
     public function changeSettingsAction(Request $request)
     {
         // On récupère l'utilisateur courant
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
         // On récupère le contructeur de formulaire
         $form = $this->get('form.factory')->createBuilder();
@@ -87,11 +87,13 @@ class UserController extends Controller
             if (null !== $setting['password'])
             {
                 // On récupère le service qui crypte les mots de passe
-                $factory = $this->container->get('security.encoder_factory');
-                $encoder = $factory->getEncoder($user);
+                $encoder = $this->container->get('security.password_encoder');
+
+                // On encode le mot de passe
+                $password = $encoder->encodePassword($user, $setting['password']);
 
                 // On modifie le mot de passe de l'utilisateur
-                $user->setPassword($encoder->encodePassword($setting['password'], $user->getSalt()));
+                $user->setPassword($password);
             }
 
             // On indique à l'utilisateur que le changement à fonctionné
@@ -138,12 +140,14 @@ class UserController extends Controller
                 $generator = new SecureRandom();
                 $newPassword = bin2hex($generator->nextBytes(10));
 
-                // On récupère le service qui chiffre les mots de passe
-                $factory = $this->container->get('security.encoder_factory');
-                $encoder = $factory->getEncoder($user);
+                // On récupère le service qui crypte les mots de passe
+                $encoder = $this->container->get('security.password_encoder');
 
-                // On change le mot de passe de l'utilisateur
-                $user->setPassword($encoder->encodePassword($newPassword, $user->getSalt()));
+                // On encode le mot de passe
+                $password = $encoder->encodePassword($user, $newPassword);
+
+                // On modifie le mot de passe de l'utilisateur
+                $user->setPassword($password);
 
                 // On applique les changements en base de données
                 $manager->persist($user);

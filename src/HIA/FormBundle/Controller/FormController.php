@@ -39,7 +39,7 @@ class FormController extends Controller
         }
 
         // On récupère l'id de l'utilisateur courant
-        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
+        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // On récupère le service pour vérifier l'accès
         $checkAccess = $this->get('hia_checkaccess.hia_checkaccess');
@@ -67,7 +67,7 @@ class FormController extends Controller
             $converterToString = $this->get('hia_convert.tostring');
 
             // On récupère l'utilisateur courant
-            $user = $this->get('security.context')->getToken()->getUser();
+            $user = $this->get('security.token_storage')->getToken()->getUser();
 
             // On instancie une nouvelle inscription
             $registration = new Registration();
@@ -185,7 +185,7 @@ class FormController extends Controller
         }
 
         // On récupère l'id du l'utilisateur
-        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
+        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // On récupère le service qui vérifie les accès
         $checkAccess = $this->get('hia_checkaccess.hia_checkaccess');
@@ -210,7 +210,7 @@ class FormController extends Controller
         // TODO Vérifier page 500 pour ici
 
         // On récupère l'utilisateur courant
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
         // On récupère l'id du l'utilisateur
         $idUser = $user->getId();

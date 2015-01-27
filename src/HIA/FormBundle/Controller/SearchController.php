@@ -21,7 +21,7 @@ class SearchController extends Controller
     public function searchFormAjaxAction(Request $request) // Uniquement si la requête est en Ajax
     {
         // On récupère l'id de l'utilisateur courant
-        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
+        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // On récupère la valeur POST 'formName'
         $formName = $request->request->get("formName");
@@ -55,7 +55,7 @@ class SearchController extends Controller
     public function searchFormAction()
     {
         // On récupère l'id de l'utilisateur courant
-        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
+        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // On récupère le manager des entités
         $manager = $this->getDoctrine()->getManager();
@@ -87,7 +87,7 @@ class SearchController extends Controller
         $page = 1;
 
         // On récupère l'id de l'utilisateur courant
-        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
+        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // On récupère la valeur POST 'idStatus'
         $idStatus = $request->request->get("idStatus");
@@ -145,7 +145,7 @@ class SearchController extends Controller
     public function searchRegistrationAction($page)
     {
         // On récupère l'id de l'utilisateur courant
-        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
+        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // On récupère le manager des entités
         $manager = $this->getDoctrine()->getManager();        

@@ -17,7 +17,7 @@ class BlockController extends Controller
     public function unreadOtherAction($offset, $limit)
     {
         // On récupère l'id de l'utilisateur courant
-        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
+        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // On récupère le repository de Registration
         $repo = $this->getDoctrine()->getManager()->getRepository('HIAFormBundle:Registration');
@@ -36,7 +36,7 @@ class BlockController extends Controller
     public function readUserAction($offset, $limit)
     {
         // On récupère l'id de l'utilisateur courant
-        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
+        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // On récupère le repository de Registration
         $repo = $this->getDoctrine()->getManager()->getRepository('HIAFormBundle:Registration');
@@ -55,7 +55,7 @@ class BlockController extends Controller
     public function lastFormUsedAction($offset, $limit)
     {
         // On récupère l'id de l'utilisateur courant
-        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
+        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // On récupère le manager des entités
         $manager = $this->getDoctrine()->getManager();
@@ -78,7 +78,7 @@ class BlockController extends Controller
 	{
 		// Si l'id de l'utilisateur n'est pas donné on la prends celle de l'utilisateur courant
 		if (null === $idUser)	
-	        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
+	        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
 		// On récupère le manager des entités
         $manager = $this->getDoctrine()->getManager();
@@ -101,7 +101,7 @@ class BlockController extends Controller
 	{
 		// Si l'id de l'utilisateur n'est pas donné on prends celle de l'utilisateur courant
 		if (null === $idUser)	
-	        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
+	        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
 		// On récupère le manager des entités
         $manager = $this->getDoctrine()->getManager();
@@ -123,7 +123,7 @@ class BlockController extends Controller
     public function countUnreadSubmitByOtherAction()
     {
         // On récupère l'id de l'utilisateur courant
-        $idUser = $this->get('security.context')->getToken()->getUser()->getId();
+        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // On récupère le repository de Registration
         $repo = $this->getDoctrine()->getManager()->getRepository("HIAFormBundle:Registration");
