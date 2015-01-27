@@ -1,4 +1,5 @@
 var selectedTags = new Array();
+var changeOption = false;
 
 function removeSelectedTag(id)
 {
@@ -15,28 +16,33 @@ function searchForm()
 {
     var textToSearch = $("#formName").val();
     var url = window.location.href;
-    var countForms = $("#listForm .formHIA").length;
+    var countForms = changeOption ? 0 : $("#listForm .formHIA").length;
 
-    // TODO loader
+    //console.log("Change option : " + changeOption); // FALSE ALORS QU'ELLE DOIT ETRE TRUE (ligne 99)
+    //console.log("Count form : " + countForms);
+
+    // TODO Add loader
     $.ajax({
         type: 'POST',
-       dataType: 'json',
+        dataType: 'json',
         url: url,
         data:{
             idTag : selectedTags,
             formName : textToSearch,
             nbForms: countForms
         },
-        success: function (datas){
+        success: function (datas) {
             //console.log(datas);
 
-            //$("#listForm").html("");
+            if (changeOption) {
+                $("#listForm").html("");
+            }
 
             var response = "";
 
             if (0 >= datas['forms'].length)
             {
-                $("#listForm").html('<tr><td colspan="4">Aucun formulaire</td></tr>');
+                // TODO Add notification pour dire que rien d'autre n'est disponible
             }
             else
             {
@@ -44,21 +50,21 @@ function searchForm()
                 {
                     response += "<tr class=\"formHIA\">";
                     response +=  "<td>" + datas['forms'][i]['name'] + "</td>";
-                    response +=  "<td>";
+                    /*response +=  "<td>";
 
                     for (y in datas['forms'][i]['tags'])
                     {
                         response += '<span class="label label-info">' + datas['forms'][i]['tags'][y]['name'] + '</span>\n';
                     }
 
-                    response += "</td>";
+                    response += "</td>";*/
                     response +=  '<td class="text-center"><a href="/app_dev.php/form/' +  datas['forms'][i]['slug'] + '"><span class="glyphicon glyphicon-search"></span></a></td>'; // TODO Changer URL en prod
                     response += "</tr>";
                 }
                 $("#listForm").append(response);
             }
 
-            makePagination(datas['hasNext']);
+            changeOption = false;
         }
 
     });
@@ -88,17 +94,28 @@ $(document).ready(function()
             selectedTags.push($(this).attr('id'));
         }
         //console.log(selectedTags);
+        changeOption = true;
+
         searchForm();
+
+        //console.log("Click on tag : " + changeOption);
     });
 
 
     $("#btnFormSearch").click(function() {
-        //console.log($("#formName").val())
+        changeOption = true;
         searchForm();
     });
 
+    $("#moreForm").click(function() {
+        changeOption = false;
+        searchForm();
+    })
+
+    searchForm();
 })
 
+/*
 function makePagination(hasNext)
 {
     $(".page").remove();
@@ -111,4 +128,4 @@ function makePagination(hasNext)
     var disable = hasNext ? '' : 'disabled';
 
     $(".pagination").append('<li class="' + disable + ' next-page"><a href="/search/form/2" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>');
-}
+}*/

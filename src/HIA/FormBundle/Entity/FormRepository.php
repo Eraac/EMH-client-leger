@@ -37,7 +37,7 @@ class FormRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('f')
                     ->leftJoin('f.tags', 't')
-                    ->addSelect('t')
+                    //->addSelect('t')
                     ->orderBy('f.dateCreate', 'DESC')
                     ->leftJoin('f.writers', 'g')
                     ->leftJoin('g.users', 'u')
@@ -47,7 +47,7 @@ class FormRepository extends EntityRepository
                             "formName" => "%" . $formName . "%",
                             "tags" => $idTags
                         ))
-
+                    ->distinct()
                     ->setFirstResult($offset)
                     ->setMaxResults($limit);
 

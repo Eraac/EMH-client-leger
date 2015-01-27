@@ -4,6 +4,7 @@ namespace HIA\FormBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use HIA\FormBundle\Entity\Registration;
 
 /**
  * RegistrationRepository
@@ -122,9 +123,10 @@ class RegistrationRepository extends EntityRepository
             ->leftJoin('f.readers', 'g')
             ->leftJoin('g.users', 'u')
             ->orderBy("r.registrationDate", 'ASC')
-            ->where('r.userValidate is null AND u.id = :idUser AND r.userSubmit != :idUser')
+            ->where('(r.userValidate is null OR (r.userValidate = :idUser AND r.status = :pending)) AND u.id = :idUser AND r.userSubmit != :idUser')
             ->setParameters(array(
-                'idUser'    => $idUser
+                'idUser'    => $idUser,
+                'pending'   => Registration::$_STATUS['PENDING']
             ))
             ->setFirstResult($offset)
             ->setMaxResults($limit);

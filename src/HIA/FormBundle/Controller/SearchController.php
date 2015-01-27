@@ -54,25 +54,16 @@ class SearchController extends Controller
      */
     public function searchFormAction()
     {
-        // On récupère l'id de l'utilisateur courant
-        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
-
         // On récupère le manager des entités
         $manager = $this->getDoctrine()->getManager();
 
         // On récupère le repository de Tag
         $tagRepository = $manager->getRepository("HIAFormBundle:Tag");
 
-        // On récupère le repository de Form
-        $formRepository = $manager->getRepository("HIAFormBundle:Form");
-
         // On récupère la liste des tags
         $listTags = $tagRepository->findAll();
 
-        // On récupère la liste de formulaire (limité à 20)
-        $listForms = $formRepository->getAll($idUser, 0, ITEM_PER_PAGE);
-
-        return array("tags" => $listTags, "forms" => $listForms);
+        return array("tags" => $listTags);
     }
     
     

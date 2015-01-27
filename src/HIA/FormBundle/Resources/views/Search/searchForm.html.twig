@@ -28,29 +28,17 @@
             <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Tags</th>
+                    <!--<th>Tags</th>-->
                     <th class="text-center">Accès</th>
                 </tr>
             </thead>
             
             <tbody id="listForm">
-                {% for form in forms %}
-                <tr class="formHIA">
-                    <td>{{ form.name }}</td>
-                    <td>
-                        {% for tag in form.tags %}
-                            <span class="label label-info">{{ tag.name }}</span>
-                        {% endfor %}
-                    </td>
-                    <td class="text-center"><a href="{{ path('HIAFormUse', {'slug': form.slug}) }}"><span class="glyphicon glyphicon-search"></span></a></td>
-                </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="4">Aucun formulaire</td>
-                    </tr>
-                {% endfor %}
+
             </tbody>
         </table>
+
+        <button class="btn btn-primary" id="moreForm">Plus</button>
 
     </div>
 
