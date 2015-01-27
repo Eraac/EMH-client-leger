@@ -105,7 +105,7 @@ function searchRegistration()
                 $("#listRegistration").append(response);
             }
 
-            makePagination(datas['hasNext']);
+            //makePagination(datas['hasNext']);
         }
 
     });
@@ -179,6 +179,7 @@ $(document).ready(function() {
 
 })
 
+/*
 function makePagination(hasNext)
 {
     $(".page").remove();
@@ -194,4 +195,4 @@ function makePagination(hasNext)
         $(".pagination").append('<li class="page"><a href="/search/registration/2">2</a></li>');
 
     $(".pagination").append('<li class="' + disable + ' next-page"><a href="/search/registration/2" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>');
-}
+}*/
