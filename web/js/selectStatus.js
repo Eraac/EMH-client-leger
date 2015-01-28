@@ -59,7 +59,7 @@ function searchRegistration()
             valid: selectedValid,
             nbRegistration: countRegistration
         },
-        success: function (datas) { // TODO Ajouter un fail
+        success: function (datas) {
             //console.log(datas);
 
             //console.log("Change option 2 : " + optionChange);

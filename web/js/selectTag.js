@@ -36,7 +36,7 @@ function searchForm()
             formName : textToSearch,
             nbForms: countForms
         },
-        success: function (datas) { // TODO Ajouter un fail
+        success: function (datas) {
             //console.log(datas);
 
             if (changeOption) {
