@@ -35,9 +35,9 @@ class FormRepository extends EntityRepository
     // Retourne tous les formulaires avec des contraintes
     public function getForms($idUser, $formName, $idTags, $offset, $limit)
     {
+        // TODO Bug quand on deselectionne les 2 premier tag l'ordre d'affichage change
         $qb = $this->createQueryBuilder('f')
                     ->leftJoin('f.tags', 't')
-                    //->addSelect('t')
                     ->orderBy('f.dateCreate', 'DESC')
                     ->leftJoin('f.writers', 'g')
                     ->leftJoin('g.users', 'u')
@@ -51,9 +51,7 @@ class FormRepository extends EntityRepository
                     ->setFirstResult($offset)
                     ->setMaxResults($limit);
 
-        $results = new Paginator($qb, true);
-
-        return $results->getQuery()->getArrayResult();
+        return $qb->getQuery()->getArrayResult();
     }
 
     // Compte le nombre de formulaire auquel l'utilisateur à accès
