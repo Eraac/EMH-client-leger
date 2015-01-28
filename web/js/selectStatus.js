@@ -41,10 +41,13 @@ function searchRegistration()
     var url = window.location.href;
     var countRegistration = optionChange ? 0 : $("#listRegistration .registrationHIA").length;
 
-    console.log("Change option : " + optionChange);
-    console.log("Count registration : " + countRegistration);
-    
-    // TODO Add loader
+    //console.log("Change option : " + optionChange);
+    //console.log("Count registration : " + countRegistration);
+
+    var loader = $('#loader');
+
+    loader.addClass("glyphicon glyphicon-refresh rotating");
+
     $.ajax({
         type: 'POST',
         dataType: 'json',
@@ -56,13 +59,13 @@ function searchRegistration()
             nbRegistration: countRegistration
         },
         success: function (datas) {
-            console.log(datas);
+            //console.log(datas);
 
-            console.log("Change option 2 : " + optionChange);
+            //console.log("Change option 2 : " + optionChange);
 
             if (optionChange) {
                 $("#listRegistration").html("");
-                console.log("Suppression tableau")
+                //console.log("Suppression tableau")
             }
 
             var response = "";
@@ -123,6 +126,8 @@ function searchRegistration()
             }
 
             optionChange = false;
+
+            loader.removeClass("glyphicon glyphicon-refresh rotating");
         }
 
     });
@@ -209,21 +214,3 @@ $(document).ready(function() {
     searchRegistration();
 
 })
-
-/*
-function makePagination(hasNext)
-{
-    $(".page").remove();
-    $(".next-page").remove();
-    $(".previous-page").remove();
-
-    $(".pagination").append('<li class="previous-page disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>');
-    $(".pagination").append('<li class="page active"><a href="#">1 <span class="sr-only">(current)</span></a></li>');
-
-    var disable = hasNext ? '' : 'disabled';
-
-    if (hasNext)
-        $(".pagination").append('<li class="page"><a href="/search/registration/2">2</a></li>');
-
-    $(".pagination").append('<li class="' + disable + ' next-page"><a href="/search/registration/2" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>');
-}*/

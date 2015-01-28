@@ -21,7 +21,11 @@ function searchForm()
     //console.log("Change option : " + changeOption);
     //console.log("Count form : " + countForms);
 
-    // TODO Add loader
+
+    var loader = $('#loader');
+
+    loader.addClass("glyphicon glyphicon-refresh rotating");
+
     $.ajax({
         type: 'POST',
         dataType: 'json',
@@ -69,6 +73,8 @@ function searchForm()
             }
 
             changeOption = false;
+
+            loader.removeClass("glyphicon glyphicon-refresh rotating");
         }
 
     });
