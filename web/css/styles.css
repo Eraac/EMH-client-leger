@@ -127,3 +127,8 @@ a.nounderline:hover {
     -o-animation: rotating 2s linear infinite;
     animation: rotating 2s linear infinite;
 }
+
+.end-table {
+    font-weight: bold;
+    font-size: 18px;
+}

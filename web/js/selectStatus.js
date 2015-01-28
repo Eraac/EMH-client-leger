@@ -2,6 +2,7 @@ var selectedStatus = new Array();
 var selectedSubmit = new Array();
 var selectedValid = new Array();
 var optionChange = false;
+var end = false;
 
 function removeSelectedStatus(id)
 {
@@ -65,6 +66,7 @@ function searchRegistration()
 
             if (optionChange) {
                 $("#listRegistration").html("");
+                end = false;
                 //console.log("Suppression tableau")
             }
 
@@ -73,9 +75,12 @@ function searchRegistration()
             if (0 >= datas['registrations'].length)
             {
                 if (optionChange) {
-                    // TODO Add Si option changé mettre une ligne "no result"
+                    $("#listRegistration").html("<tr><td class='text-center end-table' colspan='4'>Aucun résultat disponible</td></tr>")
                 } else {
-                    // TODO Add Si option inchangé notification pour dire que rien d'autre n'est disponible
+                    if (0 < countRegistration && !end) {
+                        $("#listRegistration").append("<tr><td class='text-center end-table' colspan='4'>Vous êtes à la fin !</td></tr>")
+                        end = true;
+                    }
                 }
             }
             else

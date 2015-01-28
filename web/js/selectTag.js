@@ -1,5 +1,6 @@
 var selectedTags = new Array();
 var changeOption = false;
+var end = false;
 
 function removeSelectedTag(id)
 {
@@ -40,6 +41,7 @@ function searchForm()
 
             if (changeOption) {
                 $("#listForm").html("");
+                end = false;
             }
 
             var response = "";
@@ -47,9 +49,12 @@ function searchForm()
             if (0 >= datas['forms'].length)
             {
                 if (changeOption) {
-                    // TODO Add Si option changé mettre une ligne "no result"
+                    $("#listForm").html("<tr><td class='text-center end-table' colspan='2'>Aucun résultat disponible</td></tr>")
                 } else {
-                    // TODO Add Si option inchangé notification pour dire que rien d'autre n'est disponible
+                    if (0 < countForms && !end) {
+                        $("#listForm").append("<tr><td class='text-center end-table' colspan='2'>Vous êtes à la fin !</td></tr>")
+                        end = true;
+                    }
                 }
             }
             else
