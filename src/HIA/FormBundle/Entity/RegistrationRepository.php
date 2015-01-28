@@ -18,6 +18,7 @@ class RegistrationRepository extends EntityRepository
     public function getRegistrations($idUser, $idStatus, $who, $offset, $limit)
     {
         $qb = $this->createQueryBuilder('r')
+                    ->distinct()
                     ->leftJoin('r.form', 'f')
                     ->leftJoin('r.userSubmit', 'us')
                     ->leftJoin('r.userValidate', 'uv')

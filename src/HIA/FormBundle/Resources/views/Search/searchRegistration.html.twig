@@ -56,33 +56,11 @@
             </thead>
             
             <tbody id="listRegistration">
-                {% for registration in registrations %}
-                <tr>
-                    <td>{{ registration.userSubmit.fullName }}</td>
-                    <td>
-                        {% if registration.pending %}
-                            {% set class, value = "info", "En cours" %}
-                        {% elseif registration.new %}
-                            {% set class, value = "info", "Nouveau" %}
-                        {% elseif registration.validate %}
-                            {% set class, value = "primary", "Validé" %}
-                        {% elseif registration.accept %}
-                            {% set class, value = "success", "Accepté" %}
-                        {% elseif registration.refuse %}
-                            {% set class, value = "danger", "Refusé" %}
-                        {% endif %}
-                        <span class="label label-{{ class }}">{{ value }}</span>
-                    </td>
-                    <td>{{ registration.registrationDate|date("d-m-Y à H:i") }}</td>
-                    <td class="text-center"><a href="{{ path('HIAFormReadRegistration', {'id': registration.id}) }}"><span class="glyphicon glyphicon-search"></span></a></td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="4">Aucun enregistrement</td>
-                </tr>
-                {% endfor %}
+                {# TODO Add balise no script #}
             </tbody>
         </table>
+
+        <button class="btn btn-primary" id="moreRegistration">Plus</button>
 
     </div>
 

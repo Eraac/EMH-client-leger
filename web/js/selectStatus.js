@@ -1,6 +1,7 @@
 var selectedStatus = new Array();
 var selectedSubmit = new Array();
 var selectedValid = new Array();
+var optionChange = false;
 
 function removeSelectedStatus(id)
 {
@@ -38,9 +39,12 @@ function removeSelectedValid(id)
 function searchRegistration()
 {
     var url = window.location.href;
+    var countRegistration = optionChange ? 0 : $("#listRegistration .registrationHIA").length;
 
+    console.log("Change option : " + optionChange);
+    console.log("Count registration : " + countRegistration);
     
-    // TODO loader
+    // TODO Add loader
     $.ajax({
         type: 'POST',
         dataType: 'json',
@@ -48,18 +52,28 @@ function searchRegistration()
         data:{
             idStatus : selectedStatus,
             submit: selectedSubmit,
-            valid: selectedValid
+            valid: selectedValid,
+            nbRegistration: countRegistration
         },
-        success: function (datas){
+        success: function (datas) {
             console.log(datas);
 
-            $("#listRegistration").html("");
+            console.log("Change option 2 : " + optionChange);
+
+            if (optionChange) {
+                $("#listRegistration").html("");
+                console.log("Suppression tableau")
+            }
 
             var response = "";
 
             if (0 >= datas['registrations'].length)
             {
-                $("#listRegistration").html('<tr><td colspan="4">Aucun enregistrement</td></tr>');
+                if (optionChange) {
+                    // TODO Add Si option changé mettre une ligne "no result"
+                } else {
+                    // TODO Add Si option inchangé notification pour dire que rien d'autre n'est disponible
+                }
             }
             else
             {
@@ -77,20 +91,23 @@ function searchRegistration()
                     var date = day + "-" + month + "-" + date.getFullYear() + " à " + hours + ":" + minutes;
 
                     //console.log(datas[i]['name']);
-                    response += "<tr>";
+                    response += "<tr class=\"registrationHIA\">";
                     response +=  "<td>" + datas['registrations'][i]['userSubmit']['firstName'] + " " + datas['registrations'][i]['userSubmit']['name'] + "</td>";
                     response +=  "<td>";
 
                     if (1 === datas['registrations'][i]['status']) {
                         className = "info";
-                        status = "En cours";
+                        status = "Nouveau";
                     } else if (2 === datas['registrations'][i]['status']) {
+                        className = "info";
+                        status = "En cours";
+                    } else if (3 === datas['registrations'][i]['status']) {
                         className = "primary";
                         status = "Validé";
-                    } else if (3 === datas['registrations'][i]['status']) {
+                    } else if (4 === datas['registrations'][i]['status']) {
                         className = "success";
                         status = "Accepté";
-                    } else if (4 === datas['registrations'][i]['status']) {
+                    } else if (5 === datas['registrations'][i]['status']) {
                         className = "danger";
                         status = "Refusé";
                     }
@@ -105,10 +122,11 @@ function searchRegistration()
                 $("#listRegistration").append(response);
             }
 
-            //makePagination(datas['hasNext']);
+            optionChange = false;
         }
 
     });
+
 }
 
 $(document).ready(function() {   
@@ -142,6 +160,8 @@ $(document).ready(function() {
             $(this).addClass($(this).attr('data-class'));
             selectedStatus.push($(this).attr('id'));
         }
+
+        optionChange = true;
         
         //console.log(selectedStatus);
         searchRegistration();
@@ -157,7 +177,9 @@ $(document).ready(function() {
         {
             selectedSubmit.push($(this).attr('id'));
         }
-        
+
+        optionChange = true;
+
         //console.log(selectedSubmit);
         searchRegistration();
     });
@@ -172,10 +194,19 @@ $(document).ready(function() {
         {
             selectedValid.push($(this).attr('id'));
         }
+
+        optionChange = true;
         
         //console.log(selectedValid);
         searchRegistration();
     });
+
+    $('#moreRegistration').click(function() {
+        searchRegistration();
+        optionChange = false;
+    })
+
+    searchRegistration();
 
 })
 

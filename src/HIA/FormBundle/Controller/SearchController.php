@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-define ("ITEM_PER_PAGE", 20); // TODO [BUG] Le nombre n'est pas bon
+define ("ITEM_PER_PAGE", 20);
 
 class SearchController extends Controller
 {
@@ -68,14 +68,13 @@ class SearchController extends Controller
     
     
     /**
-     * @Route("/search/registration/{page}", name="HIARegistrationSearchAjax",
-     *      requirements={"page" = "\d+"}, defaults={"page" = 1})
+     * @Route("/search/registration", name="HIARegistrationSearchAjax")
      * @Method({"POST"})
      */
-    public function searchRegistrationAjaxAction(Request $request, $page) // Uniquement si la requête est en Ajax
+    public function searchRegistrationAjaxAction(Request $request) // Uniquement si la requête est en Ajax
     {
-        // On retourne à la page 1
-        $page = 1;
+        // On récupère le nombre d'enregistrmeent
+        $nbRegistrations = $request->request->get("nbRegistration", 0);
 
         // On récupère l'id de l'utilisateur courant
         $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
@@ -117,42 +116,23 @@ class SearchController extends Controller
         $registrationRepository = $manager->getRepository("HIAFormBundle:Registration");        
 
         // On récuperer les formulaires qui répondent aux critéres
-        $listRegistrations = $registrationRepository->getRegistrations($idUser, $idStatus, $who, ($page - 1) * ITEM_PER_PAGE, ITEM_PER_PAGE * $page);
+        $listRegistrations = $registrationRepository->getRegistrations($idUser, $idStatus, $who, $nbRegistrations, ITEM_PER_PAGE);
 
-        // On récupère le nombre enregistrement pour savoir si il reste des pages
-        $countForm = $registrationRepository->countRegistrationUserCanAccessAjax($idUser, $idStatus, $who);
 
-        $response = array('registrations' => $listRegistrations, 'hasNext' => ($countForm > ITEM_PER_PAGE));
+        $response = array('registrations' => $listRegistrations);
 
         // On retourne une réponse en JSON
         return new JsonResponse($response);
     }
 
     /**
-     * @Route("/search/registration/{page}", name="HIARegistrationSearch", requirements={"page" = "\d+"}, defaults={"page" = 1}))
+     * @Route("/search/registration", name="HIARegistrationSearch")
      * @Method({"GET"})
      * @Template()
      */
-    public function searchRegistrationAction($page)
+    public function searchRegistrationAction()
     {
-        // On récupère l'id de l'utilisateur courant
-        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
-
-        // On récupère le manager des entités
-        $manager = $this->getDoctrine()->getManager();        
-
-        // On récupère le repository de registration
-        $registrationRepository = $manager->getRepository("HIAFormBundle:Registration");
-
-        // On récupère la liste de registration (limité à 20)
-        $listRegistrations = $registrationRepository->getAll($idUser, ($page - 1) * ITEM_PER_PAGE, ITEM_PER_PAGE * $page);
-        
-        // On récupère le nombre enregistrement pour savoir si il reste des pages
-        $countForm = $registrationRepository->countRegistrationUserCanAccess($idUser);
-        
-        $end = ($countForm <= ITEM_PER_PAGE * $page) ? true : false;
-
-        return array("registrations" => $listRegistrations, "page" => $page, "end" => $end);
+        return array();
     }
         
 }
