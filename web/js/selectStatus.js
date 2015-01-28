@@ -133,6 +133,11 @@ function searchRegistration()
             optionChange = false;
 
             loader.removeClass("glyphicon glyphicon-refresh rotating");
+        },
+        error: function() {
+            $("#listRegistration").html("<tr><td class='text-center end-table red' colspan='4'>Une erreur est survénu</td></tr>");
+
+            loader.removeClass("glyphicon glyphicon-refresh rotating");
         }
 
     });

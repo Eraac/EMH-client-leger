@@ -76,6 +76,7 @@ a.nounderline:hover {
     display: none;
 }
 
+.red,
 .star-required {
     color: red;
 }

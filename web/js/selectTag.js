@@ -80,6 +80,11 @@ function searchForm()
             changeOption = false;
 
             loader.removeClass("glyphicon glyphicon-refresh rotating");
+        },
+        error: function() {
+            $("#listForm").html("<tr><td class='text-center end-table red' colspan='2'>Une erreur est survénu</td></tr>");
+
+            loader.removeClass("glyphicon glyphicon-refresh rotating");
         }
 
     });
