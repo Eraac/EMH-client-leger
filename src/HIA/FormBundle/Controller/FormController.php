@@ -20,7 +20,7 @@ use HIA\FormBundle\FormBuilder;
 class FormController extends Controller
 {
     /**
-     * @Route("/form/{slug}", name="HIAFormUse")
+     * @Route("/form/{slug}", name="HIAFormUse", options={"expose"=true})
      * @Template()
      */
     public function useFormAction($slug, Request $request)
@@ -169,7 +169,7 @@ class FormController extends Controller
     }
 
     /**
-     * @Route("/read/{id}", name="HIAFormReadRegistration")
+     * @Route("/read/{id}", name="HIAFormReadRegistration", options={"expose"=true})
      * @Template()
      */
     public function readRegistrationAction($id)

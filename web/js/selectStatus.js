@@ -87,6 +87,8 @@ function searchRegistration()
             {
                 for(i in datas['registrations'])
                 {
+                    var urlRegistration = Routing.generate('HIAFormReadRegistration', {id: datas['registrations'][i]['id']}, true);
+
                     var className = "";
                     var status = "";
                     var date = new Date(datas['registrations'][i]['registrationDate']['date']);
@@ -124,7 +126,7 @@ function searchRegistration()
 
                     response += "</td>";
                     response +=  "<td>" + date + "</td>";
-                    response +=  '<td class="text-center"><a href="/app_dev.php/read/' +  datas['registrations'][i]['id'] + '"><span class="glyphicon glyphicon-search"></span></a></td>'; // TODO Changer URL en prod
+                    response +=  '<td class="text-center"><a href="' +  urlRegistration + '"><span class="glyphicon glyphicon-search"></span></a></td>'; // TODO Changer URL en prod
                     response += "</tr>";
                 }
                 $("#listRegistration").append(response);

@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new HIA\CoreBundle\HIACoreBundle(),
             new HIA\FormBundle\HIAFormBundle(),
             new HIA\UserBundle\HIAUserBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

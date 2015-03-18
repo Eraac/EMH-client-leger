@@ -61,6 +61,8 @@ function searchForm()
             {
                 for(i in datas['forms'])
                 {
+                    var urlForm = Routing.generate('HIAFormUse', {slug: datas['forms'][i]['slug']}, true);
+
                     response += "<tr class=\"formHIA\">";
                     response +=  "<td>" + datas['forms'][i]['name'] + "</td>";
                     /*response +=  "<td>";
@@ -71,7 +73,7 @@ function searchForm()
                     }
 
                     response += "</td>";*/
-                    response +=  '<td class="text-center"><a href="/app_dev.php/form/' +  datas['forms'][i]['slug'] + '"><span class="glyphicon glyphicon-search"></span></a></td>'; // TODO Changer URL en prod
+                    response +=  '<td class="text-center"><a href="' +  urlForm + '"><span class="glyphicon glyphicon-search"></span></a></td>'; // TODO Changer URL en prod
                     response += "</tr>";
                 }
                 $("#listForm").append(response);
