@@ -1,6 +1,7 @@
 var selectedTags = new Array();
 var changeOption = false;
 var end = false;
+var alreadyRequest = false;
 
 function removeSelectedTag(id)
 {
@@ -15,6 +16,10 @@ function removeSelectedTag(id)
 
 function searchForm()
 {
+    if (alreadyRequest)
+        return;
+
+    alreadyRequest = true;
     var textToSearch = $("#formName").val();
     var url = window.location.href;
     var countForms = changeOption ? 0 : $("#listForm .formHIA").length;
@@ -73,7 +78,7 @@ function searchForm()
                     }
 
                     response += "</td>";*/
-                    response +=  '<td class="text-center"><a href="' +  urlForm + '"><span class="glyphicon glyphicon-search"></span></a></td>'; // TODO Changer URL en prod
+                    response +=  '<td class="text-center"><a href="' +  urlForm + '"><span class="glyphicon glyphicon-search"></span></a></td>';
                     response += "</tr>";
                 }
                 $("#listForm").append(response);
@@ -87,9 +92,13 @@ function searchForm()
             $("#listForm").html("<tr><td class='text-center end-table red' colspan='2'>Une erreur est survénu</td></tr>");
 
             loader.removeClass("glyphicon glyphicon-refresh rotating");
+        },
+        complete: function() {
+            alreadyRequest = false;
         }
 
     });
+
 }
 
 $(document).ready(function()
@@ -103,6 +112,9 @@ $(document).ready(function()
 
     $('.selectableTag').click(function()
     {
+        if (alreadyRequest)
+            return;
+
         if($(this).hasClass('label-primary'))
         {
             $(this).removeClass('label-primary');
@@ -125,11 +137,17 @@ $(document).ready(function()
 
 
     $("#btnFormSearch").click(function() {
+        if (alreadyRequest)
+            return;
+
         changeOption = true;
         searchForm();
     });
 
     $("#moreForm").click(function() {
+        if (alreadyRequest)
+            return;
+
         changeOption = false;
         searchForm();
     })

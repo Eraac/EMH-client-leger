@@ -3,6 +3,7 @@ var selectedSubmit = new Array();
 var selectedValid = new Array();
 var optionChange = false;
 var end = false;
+var alreadyRequest = false;
 
 function removeSelectedStatus(id)
 {
@@ -39,6 +40,10 @@ function removeSelectedValid(id)
 
 function searchRegistration()
 {
+    if (alreadyRequest)
+        return;
+
+    alreadyRequest = true;
     var url = window.location.href;
     var countRegistration = optionChange ? 0 : $("#listRegistration .registrationHIA").length;
 
@@ -126,7 +131,7 @@ function searchRegistration()
 
                     response += "</td>";
                     response +=  "<td>" + date + "</td>";
-                    response +=  '<td class="text-center"><a href="' +  urlRegistration + '"><span class="glyphicon glyphicon-search"></span></a></td>'; // TODO Changer URL en prod
+                    response +=  '<td class="text-center"><a href="' +  urlRegistration + '"><span class="glyphicon glyphicon-search"></span></a></td>';
                     response += "</tr>";
                 }
                 $("#listRegistration").append(response);
@@ -140,6 +145,9 @@ function searchRegistration()
             $("#listRegistration").html("<tr><td class='text-center end-table red' colspan='4'>Une erreur est survénu</td></tr>");
 
             loader.removeClass("glyphicon glyphicon-refresh rotating");
+        },
+        complete: function() {
+            alreadyRequest = false;
         }
 
     });
@@ -164,7 +172,10 @@ $(document).ready(function() {
     )
 
     $('.selectableStatus').click(function() {
-        
+
+        if (alreadyRequest)
+            return;
+
         if($(this).hasClass($(this).attr('data-class')))
         {
             $(this).removeClass($(this).attr('data-class'));
@@ -185,7 +196,10 @@ $(document).ready(function() {
     });
     
     $('.selectableSubmit').change(function() {
-        
+
+        if (alreadyRequest)
+            return;
+
         if(!$(this).prop("checked"))
         {
             removeSelectedSubmit($(this).attr('id'));
@@ -202,7 +216,7 @@ $(document).ready(function() {
     });
     
     $('.selectableValid').change(function() {
-        
+
         if(!$(this).prop("checked"))
         {
             removeSelectedValid($(this).attr('id'));
@@ -219,6 +233,10 @@ $(document).ready(function() {
     });
 
     $('#moreRegistration').click(function() {
+
+        if (alreadyRequest)
+            return;
+
         searchRegistration();
         optionChange = false;
     })
