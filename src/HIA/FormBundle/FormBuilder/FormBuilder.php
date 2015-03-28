@@ -57,6 +57,7 @@ class FormBuilder
                     $options['data'] = $defaultValue->getValue();
             }
 
+            // TODO Vérifier si en remplacement label par id cela ne pose pas problème
             $htmlForm->add($label, $type, $options);
         }
 
