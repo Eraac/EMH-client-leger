@@ -216,9 +216,9 @@ class FormController extends Controller
         $idUser = $user->getId();
 
         // Si le status envoyé ne correspond pas à une code connu
-        if ($status != Registration::$_STATUS['PENDING'] AND
-            $status != Registration::$_STATUS['VALIDATE'] AND
-            $status != Registration::$_STATUS['ACCEPT'] AND
+        if ($status != Registration::$_STATUS['PENDING'] &&
+            $status != Registration::$_STATUS['VALIDATE'] &&
+            $status != Registration::$_STATUS['ACCEPT'] &&
             $status != Registration::$_STATUS['REFUSE'])
         {
             $response = new Response("Code inconnu");
@@ -228,7 +228,7 @@ class FormController extends Controller
         }
 
         // Si l'enregistrement n'a pas en statut 'nouveau'
-        if ($registration->getStatus() != Registration::$_STATUS['NEW'] AND
+        if ($registration->getStatus() != Registration::$_STATUS['NEW'] &&
             $registration->getUserValidate()->getId() != $idUser)
         {
             $response = new Response("Cette enregistrement est déjà pris en charge");
@@ -241,10 +241,10 @@ class FormController extends Controller
         $formStatut = $registration->getForm()->getStatus();
 
         // Si le nouveau statut ne correspond pas au type de formulaire
-        if (($formStatut != Form::$_STATUS['DEMAND'] AND ($status == Registration::$_STATUS['ACCEPT'] OR $status == Registration::$_STATUS['REFUSE'])
-                OR
-            $formStatut == Form::$_STATUS['DEMAND'] AND $status == Registration::$_STATUS['VALIDATE'])
-                AND
+        if (($formStatut != Form::$_STATUS['DEMAND'] && ($status == Registration::$_STATUS['ACCEPT'] || $status == Registration::$_STATUS['REFUSE'])
+                ||
+            $formStatut == Form::$_STATUS['DEMAND'] && $status == Registration::$_STATUS['VALIDATE'])
+                &&
             $status != Registration::$_STATUS['PENDING']
         )
         {
@@ -258,7 +258,7 @@ class FormController extends Controller
         $checkAccess = $this->get('hia_checkaccess.hia_checkaccess');
 
         // Si l'utilisateur n'a pas accès à l'enregistrement ou si l'utilisateur est l'auteur de la soumission
-        if (!$checkAccess->canRead($idUser, $registration->getId()) OR $registration->getUserSubmit()->getId() == $idUser)
+        if (!$checkAccess->canRead($idUser, $registration->getId()) || $registration->getUserSubmit()->getId() == $idUser)
         {
             throw new AccessDeniedException("Vous n'avez pas le droit de modifier le statut de l'enregistrement");
         }

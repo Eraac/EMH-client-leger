@@ -37,13 +37,13 @@ class RegistrationRepository extends EntityRepository
                     ->setFirstResult($offset)
                     ->setMaxResults($limit);
 
-                    if ($who['submitByUser'] AND !$who['submitByOther']) {
+                    if ($who['submitByUser'] && !$who['submitByOther']) {
                         $qb->andWhere('us.id = :idUser');
-                    } else if (!$who['submitByUser'] AND $who['submitByOther']) {
+                    } else if (!$who['submitByUser'] && $who['submitByOther']) {
                         $qb->andWhere('us.id != :idUser AND u.id = :idUser');
-                    } else if ($who['validByUser'] AND !$who['validByOther']) {
+                    } else if ($who['validByUser'] && !$who['validByOther']) {
                         $qb->andWhere('uv.id = :idUser');
-                    } else if (!$who['validByUser'] AND $who['validByOther']) {
+                    } else if (!$who['validByUser'] && $who['validByOther']) {
                         $qb->andWhere('uv.id != :idUser AND u.id = :idUser');
                     } else {
                         $qb->andWhere('u.id = :idUser OR us.id = :idUser');
@@ -234,13 +234,13 @@ class RegistrationRepository extends EntityRepository
                 "idStatus" => $idStatus
             ));
 
-        if ($who['submitByUser'] AND !$who['submitByOther']) {
+        if ($who['submitByUser'] && !$who['submitByOther']) {
             $qb->andWhere('us.id = :idUser');
-        } else if (!$who['submitByUser'] AND $who['submitByOther']) {
+        } else if (!$who['submitByUser'] && $who['submitByOther']) {
             $qb->andWhere('us.id != :idUser AND u.id = :idUser');
-        } else if ($who['validByUser'] AND !$who['validByOther']) {
+        } else if ($who['validByUser'] && !$who['validByOther']) {
             $qb->andWhere('uv.id = :idUser');
-        } else if (!$who['validByUser'] AND $who['validByOther']) {
+        } else if (!$who['validByUser'] && $who['validByOther']) {
             $qb->andWhere('uv.id != :idUser AND u.id = :idUser');
         } else {
             $qb->andWhere('u.id = :idUser OR us.id = :idUser');
