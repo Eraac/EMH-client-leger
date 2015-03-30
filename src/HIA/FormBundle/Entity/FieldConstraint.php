@@ -224,7 +224,7 @@ class FieldConstraint
 
                 $value = $paramsConstraint[0]->getValue();
 
-                $constraint = new LowerThan(array('value' => $value, 'message' => $message));
+                $constraint = new LessThan(array('value' => $value, 'message' => $message));
             break;
 
             case self::$_TYPES['LOWEROREQUAL']:
@@ -232,7 +232,7 @@ class FieldConstraint
 
                 $value = $paramsConstraint[0]->getValue();
 
-                $constraint = new LowerThan(array('value' => $value, 'message' => $message));
+                $constraint = new LessThanOrEqual(array('value' => $value, 'message' => $message));
             break;
 
             case self::$_TYPES['HIGHER']:
@@ -248,7 +248,7 @@ class FieldConstraint
 
                 $value = $paramsConstraint[0]->getValue();
 
-                $constraint = new GreaterThan(array('value' => $value, 'message' => $message));
+                $constraint = new GreaterThanOrEqual(array('value' => $value, 'message' => $message));
             break;
         }
 
