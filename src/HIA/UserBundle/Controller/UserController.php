@@ -134,7 +134,7 @@ class UserController extends Controller
             $user = $repository->findOneByUsername($email);
 
             // Si l'utilisateur est null
-            if (null != $user)
+            if (null !== $user)
             {
                 // On génére un nouveau mot de passe aléatoire
                 $generator = new SecureRandom();
