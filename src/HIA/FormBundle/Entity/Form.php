@@ -282,7 +282,6 @@ class Form
         $this->fields       = new \Doctrine\Common\Collections\ArrayCollection();
         $this->writers      = new \Doctrine\Common\Collections\ArrayCollection();
         $this->readers      = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->dateCreate   = new \DateTime();
     }
 
     /**
