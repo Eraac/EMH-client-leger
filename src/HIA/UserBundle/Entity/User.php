@@ -66,6 +66,11 @@ class User implements UserInterface
     private $roles;
 
     /**
+     * @ORM\Column(name="isAdmin", type="boolean")
+     */
+    private $isAdmin;
+
+    /**
      * @ORM\ManyToMany(targetEntity="HIA\UserBundle\Entity\UserGroup", mappedBy="users", cascade={"persist"})
      * @ORM\JoinTable(name="belong")
      */
@@ -275,4 +280,27 @@ class User implements UserInterface
     }
     
     
+
+    /**
+     * Set isAdmin
+     *
+     * @param boolean $isAdmin
+     * @return User
+     */
+    public function setIsAdmin($isAdmin)
+    {
+        $this->isAdmin = $isAdmin;
+
+        return $this;
+    }
+
+    /**
+     * Get isAdmin
+     *
+     * @return boolean
+     */
+    public function getIsAdmin()
+    {
+        return $this->isAdmin;
+    }
 }
