@@ -18,11 +18,18 @@
     </head>
 
     <body>
-    <div class="jumbotron">
-        <h1>Erreur {{ status_code }}</h1>
-        <p>Accès refusé !</p>
-        <p><a class="btn btn-primary btn-lg" href="{{ path('HIACoreIndex') }}" role="button">Retour à l'accueil</a></p>
-    </div>
+
+        <div class="container">
+            <div class="row">
+
+                <div class="jumbotron">
+                    <h1>Erreur {{ status_code }}</h1>
+                    <p>Accès refusé !</p>
+                    <p><a class="btn btn-primary btn-lg" href="{{ path('HIACoreIndex') }}" role="button">Retour à l'accueil</a></p>
+                </div>
+
+            </div>
+        </div>
 
     </body>
 </html>

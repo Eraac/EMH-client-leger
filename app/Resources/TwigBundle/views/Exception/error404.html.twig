@@ -18,10 +18,17 @@
     </head>
 
     <body>
-        <div class="jumbotron">
-            <h1>Erreur {{ status_code }}</h1>
-            <p>Page non trouvée</p>
-            <p><a class="btn btn-primary btn-lg" href="{{ path('HIACoreIndex') }}" role="button">Retour à l'accueil</a></p>
+
+        <div class="container">
+            <div class="row">
+
+                <div class="jumbotron">
+                    <h1>Erreur {{ status_code }}</h1>
+                    <p>Page non trouvée</p>
+                    <p><a class="btn btn-primary btn-lg" href="{{ path('HIACoreIndex') }}" role="button">Retour à l'accueil</a></p>
+                </div>
+
+            </div>
         </div>
 
     </body>
