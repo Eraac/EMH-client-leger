@@ -105,7 +105,7 @@ class FormRepository extends EntityRepository
     }
 
     // Retourne un formulaire complet (groupe associé, champs, contrainte, ...)
-    public function getCompleteForm($slug)
+    public function getCompleteForm($id)
     {
         $qb = $this->CreateQueryBuilder('f')
                     ->leftJoin('f.fields', 'fi')
@@ -121,8 +121,8 @@ class FormRepository extends EntityRepository
                     ->addSelect('g')
                     ->addSelect('c')
                     ->addSelect('p')
-                    ->where('f.slug = :slugForm')
-                    ->setParameter('slugForm', $slug);
+                    ->where('f.id = :idForm')
+                    ->setParameter('idForm', $id);
 
         return $qb->getQuery()->getOneOrNullResult();
     }

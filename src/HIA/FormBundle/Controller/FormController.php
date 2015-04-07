@@ -20,16 +20,16 @@ use HIA\FormBundle\FormBuilder;
 class FormController extends Controller
 {
     /**
-     * @Route("/form/{slug}", name="HIAFormUse", options={"expose"=true})
+     * @Route("/form/{id}", name="HIAFormUse", options={"expose"=true})
      * @Template()
      */
-    public function useFormAction($slug, Request $request)
+    public function useFormAction($id, Request $request)
     {
         // On récupère le manager des entités
         $manager = $this->getDoctrine()->getManager();
 
         // On récupère le formulaire
-        $form = $manager->getRepository('HIAFormBundle:Form')->getCompleteForm($slug);
+        $form = $manager->getRepository('HIAFormBundle:Form')->getCompleteForm($id);
 
         // Si le formulaire n'est pas trouvé
         if (null === $form)

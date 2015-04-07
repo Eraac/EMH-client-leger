@@ -33,12 +33,6 @@ class Form
     private $name;
 
     /**
-     * @Gedmo\Slug(fields={"name"})
-     * @ORM\Column(length=255, unique=true)
-     */
-    private $slug;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
@@ -423,28 +417,6 @@ class Form
         return $this->readers;
     }
 
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return Form
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
 
     public function isDemand()
     {

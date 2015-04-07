@@ -66,7 +66,7 @@ function searchForm()
             {
                 for(i in datas['forms'])
                 {
-                    var urlForm = Routing.generate('HIAFormUse', {slug: datas['forms'][i]['slug']}, true);
+                    var urlForm = Routing.generate('HIAFormUse', {id: datas['forms'][i]['id']}, true);
 
                     response += "<tr class=\"formHIA\">";
                     response +=  "<td>" + datas['forms'][i]['name'] + "</td>";
