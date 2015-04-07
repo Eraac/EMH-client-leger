@@ -76,18 +76,7 @@ class LoadForm implements FixtureInterface, OrderedFixtureInterface
         $fieldMultiple = array(false, false, false, false, false, false, false, true);
         $fieldIsRequired = array(true, true, true, true, false, true, true, true);
 
-        $fieldLabelField = array(
-            "what",
-            "quantity",
-            "why",
-            "start",
-            "countday",
-            "comment",
-            "notMultiple",
-            "multiple"
-        );
-
-        $fieldLabelHuman = array(
+        $fieldLabel = array(
             "Raison",
             "La quantité",
             "Pourquoi ?",
@@ -122,7 +111,7 @@ class LoadForm implements FixtureInterface, OrderedFixtureInterface
 
         $listFields = array();
 
-        $fieldMethodName = array("Type", "Multiple", "LabelField", "LabelHuman","IsRequired", "Placeholder", "HelpText");
+        $fieldMethodName = array("Type", "Multiple", "Label", "IsRequired", "Placeholder", "HelpText");
 
         // On hydrate les forms
         for($i = 0; $i < 4; $i++)
@@ -185,14 +174,14 @@ class LoadForm implements FixtureInterface, OrderedFixtureInterface
         
         // On ajoute les fields dans les forms
 
-        $listFields[0]->addForm($listForms[0]);
-        $listFields[1]->addForm($listForms[0]);
-        $listFields[2]->addForm($listForms[1]);
-        $listFields[3]->addForm($listForms[1]);
-        $listFields[4]->addForm($listForms[1]);
-        $listFields[5]->addForm($listForms[2]);
-        $listFields[6]->addForm($listForms[3]);
-        $listFields[7]->addForm($listForms[3]);
+        $listFields[0]->setForm($listForms[0]);
+        $listFields[1]->setForm($listForms[0]);
+        $listFields[2]->setForm($listForms[1]);
+        $listFields[3]->setForm($listForms[1]);
+        $listFields[4]->setForm($listForms[1]);
+        $listFields[5]->setForm($listForms[2]);
+        $listFields[6]->setForm($listForms[3]);
+        $listFields[7]->setForm($listForms[3]);
 
         foreach($listForms as $form)
             $manager->persist($form);

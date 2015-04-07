@@ -124,7 +124,7 @@ class FormController extends Controller
                         }
                     }
 
-                    // Si le champs n'a pas la contrainte USERPASSER
+                    // Si le champs n'a pas la contrainte USERPASSWORD
                     if (!$isUserPassword)
                     {
                         // On regarde si le champs est un choix

@@ -93,8 +93,7 @@ class Form
     private $tags;
 
     /**
-     * @ORM\ManyToMany(targetEntity="HIA\FormBundle\Entity\Field", mappedBy="forms", cascade={"persist"})
-     * @ORM\JoinTable(name="contains")
+     * @ORM\OneToMany(targetEntity="HIA\FormBundle\Entity\Field", mappedBy="form", cascade={"persist"})
      */
     private $fields;
 

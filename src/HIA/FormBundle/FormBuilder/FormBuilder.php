@@ -22,18 +22,17 @@ class FormBuilder
 
         $fields = $form->getFields();
 
-        // TODO [BUG] Les champs ne sont pas dans le même ordre que la base de données
         foreach ($fields as $field)
         {
-            $type       = $field->getHtmlType();
-            $label      = $field->getLabelField();
+            $type   = $field->getHtmlType();
+            $id     = $field->getId();
 
             $options = array();
 
             $options['required']    = $field->getIsRequired();
             $options['constraints'] = $this->getConstraints($field->getFieldConstraints());
             $options['attr']        = array('help_block' => $field->getHelpText());
-            $options['label']       = $field->getLabelHuman();
+            $options['label']       = $field->getLabel();
             
             if ("choice" == $type)
             {
@@ -57,8 +56,7 @@ class FormBuilder
                     $options['data'] = $defaultValue->getValue();
             }
 
-            // TODO Vérifier si en remplacement label par id cela ne pose pas problème
-            $htmlForm->add($label, $type, $options);
+            $htmlForm->add($id, $type, $options);
         }
 
         $htmlForm->add("remarque", "textarea", array('label' => "Remarque", 'attr' => array('help_block' => "Une remarque générale sur votre enregistrement, si cela est nécessaire."), 'required' => false));

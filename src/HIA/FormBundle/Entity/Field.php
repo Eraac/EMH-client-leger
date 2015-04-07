@@ -41,16 +41,9 @@ class Field
     /**
      * @var string
      *
-     * @ORM\Column(name="labelField", type="string", length=255)
+     * @ORM\Column(name="label", type="string", length=255)
      */
-    private $labelField;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="labelHuman", type="string", length=255)
-     */
-    private $labelHuman;
+    private $label;
 
     /**
      * @var string
@@ -80,10 +73,10 @@ class Field
     private $fieldConstraints;
 
     /**
-     * @ORM\ManyToMany(targetEntity="HIA\FormBundle\Entity\Form", inversedBy="fields", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="HIA\FormBundle\Entity\Form", inversedBy="fields", cascade={"persist"})
      * @ORM\JoinTable(name="contains")
      */
-    private $forms;
+    private $form;
     
     /**
      * @ORM\OneToMany(targetEntity="HIA\FormBundle\Entity\DefaultValue", mappedBy="field")
@@ -144,29 +137,6 @@ class Field
     public function getMultiple()
     {
         return $this->multiple;
-    }
-
-    /**
-     * Set labelField
-     *
-     * @param string $labelField
-     * @return Field
-     */
-    public function setLabelField($labelField)
-    {
-        $this->labelField = $labelField;
-
-        return $this;
-    }
-
-    /**
-     * Get labelField
-     *
-     * @return string 
-     */
-    public function getLabelField()
-    {
-        return $this->labelField;
     }
 
     /**
@@ -254,39 +224,6 @@ class Field
     public function getFieldConstraints()
     {
         return $this->fieldConstraints;
-    }
-
-    /**
-     * Add forms
-     *
-     * @param \HIA\FormBundle\Entity\Form $forms
-     * @return Field
-     */
-    public function addForm(\HIA\FormBundle\Entity\Form $forms)
-    {
-        $this->forms[] = $forms;
-
-        return $this;
-    }
-
-    /**
-     * Remove forms
-     *
-     * @param \HIA\FormBundle\Entity\Form $forms
-     */
-    public function removeForm(\HIA\FormBundle\Entity\Form $forms)
-    {
-        $this->forms->removeElement($forms);
-    }
-
-    /**
-     * Get forms
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getForms()
-    {
-        return $this->forms;
     }
 
     /**
@@ -396,25 +333,48 @@ class Field
     }
 
     /**
-     * Set labelHuman
+     * Set label
      *
-     * @param string $labelHuman
+     * @param string $label
      * @return Field
      */
-    public function setLabelHuman($labelHuman)
+    public function setLabel($label)
     {
-        $this->labelHuman = $labelHuman;
+        $this->label = $label;
 
         return $this;
     }
 
     /**
-     * Get labelHuman
+     * Get label
      *
      * @return string 
      */
-    public function getLabelHuman()
+    public function getLabel()
     {
-        return $this->labelHuman;
+        return $this->label;
+    }
+
+    /**
+     * Set forms
+     *
+     * @param \HIA\FormBundle\Entity\Form $forms
+     * @return Field
+     */
+    public function setForm(\HIA\FormBundle\Entity\Form $forms = null)
+    {
+        $this->form = $forms;
+
+        return $this;
+    }
+
+    /**
+     * Get forms
+     *
+     * @return \HIA\FormBundle\Entity\Form 
+     */
+    public function getForm()
+    {
+        return $this->form;
     }
 }

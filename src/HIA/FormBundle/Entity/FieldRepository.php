@@ -13,13 +13,13 @@ use Doctrine\ORM\EntityRepository;
 class FieldRepository extends EntityRepository
 {
     // Récupère un champs par rapport à un formulaire et un label
-    public function getField($idForm, $label)
+    public function getField($idForm, $idField)
     {
         $qb = $this->createQueryBuilder('f')
-                    ->leftJoin('f.forms', 'fo')
-                    ->where("f.labelField = :label AND fo.id = :idForm")
+                    ->leftJoin('f.form', 'fo')
+                    ->where("f.id = :idField AND fo.id = :idForm")
                     ->setParameters(array(
-                        'label' => $label,
+                        'idField' => $idField,
                         'idForm' => $idForm
                     ));
 
