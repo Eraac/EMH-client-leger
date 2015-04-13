@@ -22,21 +22,21 @@ class LoadConstraint implements FixtureInterface, OrderedFixtureInterface
 
         $constraintRegex = new FieldConstraint();
             $constraintRegex->setType(FieldConstraint::$_TYPES['REGEX']);
+            $constraintRegex->setFields($avisHopital);
             $pourquoiMorphine->addFieldConstraint($constraintRegex);
             $pourquoiBequille->addFieldConstraint($constraintRegex);
-            $avisHopital->addFieldConstraint($constraintRegex);
 
         $constraintDate = new FieldConstraint();
             $constraintDate->setType(FieldConstraint::$_TYPES['DATE']);
-            $debutBequille->addFieldConstraint($constraintDate);
+            $constraintDate->setFields($debutBequille);
 
         $constraintRange = new FieldConstraint();
             $constraintRange->setType(FieldConstraint::$_TYPES['RANGE']);
-            $quantiteMorphine->addFieldConstraint($constraintRange);
+            $constraintRange->setFields($quantiteMorphine);
 
         $constrainMin = new FieldConstraint();
             $constrainMin->setType(FieldConstraint::$_TYPES['HIGHER']);
-            $finBequille->addFieldConstraint($constrainMin);
+            $constrainMin->setFields($finBequille);
 
         $regexParam = new Param();
             $regexParam->setValue("/[a-zA-Z]+/");

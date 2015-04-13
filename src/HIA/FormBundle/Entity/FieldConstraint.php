@@ -49,8 +49,7 @@ class FieldConstraint
     private $type;
 
     /**
-     * @ORM\ManyToMany(targetEntity="HIA\FormBundle\Entity\Field", mappedBy="fieldConstraints")
-     * @ORM\JoinTable(name="constrained")
+     * @ORM\ManyToOne(targetEntity="HIA\FormBundle\Entity\Field", inversedBy="fieldConstraints", cascade={"persist"})
      */
     private $fields;
 
@@ -97,41 +96,7 @@ class FieldConstraint
      */
     public function __construct()
     {
-        $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
         $this->params = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add fields
-     *
-     * @param \HIA\FormBundle\Entity\Field $fields
-     * @return FieldConstraint
-     */
-    public function addField(\HIA\FormBundle\Entity\Field $fields)
-    {
-        $this->fields[] = $fields;
-
-        return $this;
-    }
-
-    /**
-     * Remove fields
-     *
-     * @param \HIA\FormBundle\Entity\Field $fields
-     */
-    public function removeField(\HIA\FormBundle\Entity\Field $fields)
-    {
-        $this->fields->removeElement($fields);
-    }
-
-    /**
-     * Get fields
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getFields()
-    {
-        return $this->fields;
     }
 
     // Retourne la contrainte instanciée
@@ -286,5 +251,29 @@ class FieldConstraint
     public function getParams()
     {
         return $this->params;
+    }
+
+    /**
+     * Set fields
+     *
+     * @param \HIA\FormBundle\Entity\Field $fields
+     *
+     * @return FieldConstraint
+     */
+    public function setFields(\HIA\FormBundle\Entity\Field $fields = null)
+    {
+        $this->fields = $fields;
+
+        return $this;
+    }
+
+    /**
+     * Get fields
+     *
+     * @return \HIA\FormBundle\Entity\Field
+     */
+    public function getFields()
+    {
+        return $this->fields;
     }
 }

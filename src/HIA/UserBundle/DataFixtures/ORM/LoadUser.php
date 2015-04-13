@@ -80,6 +80,8 @@ class LoadUser implements FixtureInterface, OrderedFixtureInterface, ContainerAw
             // On définit uniquement le role ROLE_USER qui est le role de base
             $user->setRoles(array('ROLE_USER'));
 
+            $user->setIsAdmin(true);
+
             // On le persiste
             $manager->persist($user);
         }

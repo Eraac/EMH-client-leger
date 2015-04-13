@@ -67,7 +67,7 @@ class Field
     private $isRequired;
 
     /**
-     * @ORM\ManyToMany(targetEntity="HIA\FormBundle\Entity\FieldConstraint", inversedBy="fields")
+     * @ORM\OneToMany(targetEntity="HIA\FormBundle\Entity\FieldConstraint", mappedBy="fields")
      * @ORM\JoinTable(name="constrained")
      */
     private $fieldConstraints;
@@ -76,7 +76,7 @@ class Field
      * @ORM\ManyToOne(targetEntity="HIA\FormBundle\Entity\Form", inversedBy="fields", cascade={"persist"})
      * @ORM\JoinTable(name="contains")
      */
-    private $forms;
+    private $form;
     
     /**
      * @ORM\OneToMany(targetEntity="HIA\FormBundle\Entity\DefaultValue", mappedBy="field")
@@ -330,5 +330,51 @@ class Field
     public function getDefaultValues()
     {
         return $this->defaultValues;
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     * @return Field
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Get label
+     *
+     * @return string 
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * Set forms
+     *
+     * @param \HIA\FormBundle\Entity\Form $forms
+     * @return Field
+     */
+    public function setForm(\HIA\FormBundle\Entity\Form $forms = null)
+    {
+        $this->form = $forms;
+
+        return $this;
+    }
+
+    /**
+     * Get forms
+     *
+     * @return \HIA\FormBundle\Entity\Form 
+     */
+    public function getForm()
+    {
+        return $this->form;
     }
 }

@@ -67,8 +67,7 @@ class Field
     private $isRequired;
 
     /**
-     * @ORM\ManyToMany(targetEntity="HIA\FormBundle\Entity\FieldConstraint", inversedBy="fields")
-     * @ORM\JoinTable(name="constrained")
+     * @ORM\OneToMany(targetEntity="HIA\FormBundle\Entity\FieldConstraint", mappedBy="fields")
      */
     private $fieldConstraints;
 
