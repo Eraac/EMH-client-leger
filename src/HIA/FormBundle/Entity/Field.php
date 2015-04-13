@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Field
 {
     public static $_TYPES = array("DATE" => 1, "DATETIME" => 2, "EMAIL" => 3, "NUMBER" => 4,
-                                "TEXT" => 5, "TIME" => 6, "URL" => 7, "RADIO" => 8, "TEXTAREA" => 9);
+                                "TEXT" => 5, "TIME" => 6, "URL" => 7, "RADIO" => 8, "TEXTAREA" => 9, "PASSWORD" => 10);
 
     /**
      * @var integer
@@ -268,6 +268,10 @@ class Field
 
             case self::$_TYPES['TEXTAREA']:
                 return "textarea";
+            break;
+
+            case self::$_TYPES['PASSWORD']:
+                return "password";
             break;
 
             default:
