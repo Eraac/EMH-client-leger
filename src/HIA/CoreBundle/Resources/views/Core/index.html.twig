@@ -28,6 +28,10 @@
         </div>
     </div>
 
+    <div class="col-lg-4">
+        {{ render(controller("HIAFormBundle:Block:topFormUsed")) }}
+    </div>
+
     <div class="col-lg-2 col-xs-6">
 		{# Nombre de formulaires soumit #}
         {{ render(controller("HIAFormBundle:Block:countSubmitForm", {'idUser': null})) }}

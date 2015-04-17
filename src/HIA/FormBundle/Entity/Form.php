@@ -104,6 +104,11 @@ class Form
     private $readers;
 
     /**
+     * @ORM\OneToMany(targetEntity="HIA\FormBundle\Entity\Registration", mappedBy="form")
+     */
+    private $registrations;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -443,5 +448,44 @@ class Form
     public function getColor()
     {
         return $this->color;
+    }
+
+    /**
+     * Add registration
+     *
+     * @param \HIA\FormBundle\Entity\Registration $registration
+     *
+     * @return Form
+     */
+    public function addRegistration(\HIA\FormBundle\Entity\Registration $registration)
+    {
+        $this->registrations[] = $registration;
+
+        return $this;
+    }
+
+    /**
+     * Remove registration
+     *
+     * @param \HIA\FormBundle\Entity\Registration $registration
+     */
+    public function removeRegistration(\HIA\FormBundle\Entity\Registration $registration)
+    {
+        $this->registrations->removeElement($registration);
+    }
+
+    /**
+     * Get registrations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRegistrations()
+    {
+        return $this->registrations;
+    }
+
+    public function getCountRegistration()
+    {
+        return $this->registrations->count();
     }
 }

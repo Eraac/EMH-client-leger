@@ -136,6 +136,18 @@ class BlockController extends Controller
             array('countUnreadSubmit' => $countUnreadSubmitByOther)
         );
     }
+
+    /**
+     * @Template()
+     */
+    public function topFormUsedAction()
+    {
+        $idUser = $this->get('security.token_storage')->getToken()->getUser()->getId();
+
+        $topForm = $this->get('hia_top.form')->getTopForm($idUser);
+
+        return array("forms" => $topForm);
+    }
 }
 
 

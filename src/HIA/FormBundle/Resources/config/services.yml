@@ -6,3 +6,7 @@ services:
     hia_convert.tostring:
         class: HIA\FormBundle\ToString\ToString
         arguments: [@doctrine.orm.entity_manager]
+
+    hia_top.form:
+        class: HIA\FormBundle\TopForm\TopForm
+        arguments: [@doctrine.orm.entity_manager]

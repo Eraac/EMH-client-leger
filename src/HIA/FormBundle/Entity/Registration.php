@@ -52,7 +52,7 @@ class Registration
     private $validationDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="HIA\FormBundle\Entity\Form")
+     * @ORM\ManyToOne(targetEntity="HIA\FormBundle\Entity\Form", inversedBy="registrations")
      */
     private $form;
 

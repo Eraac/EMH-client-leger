@@ -1,0 +1,27 @@
+<p class="well well-sm text-center">
+    Top des formulaires utilisés
+</p>
+
+<div class="list-group">
+
+    {% for form in forms %}
+
+        <a href="{{ path('HIAFormUse', {'id': form.id}) }}" class="list-group-item">
+            <h4 class="list-group-item-heading">{{ form.name }} <small>{{ form.countRegistration }}</small></h4>
+            <p class="list-group-item-text">
+                {% if form.countRegistration != 0 %}
+                    {{ form.description }}
+                {% else %}
+                    Formulaire jamais utilisés
+                {% endif %}
+            </p>
+        </a>
+    {% else %}
+        <div class="list-group-item">
+            <p class="list-group-item-text">
+                Aucun formulaire utilisé
+            </p>
+        </div>
+    {% endfor %}
+
+</div>

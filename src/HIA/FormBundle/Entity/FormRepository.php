@@ -126,4 +126,18 @@ class FormRepository extends EntityRepository
 
         return $qb->getQuery()->getOneOrNullResult();
     }
+
+    // Retourne tous les formulaires
+    public function getUsedForm($idUser)
+    {
+        $qb = $this->createQueryBuilder('f')
+            ->leftJoin('f.writers', 'g')
+            ->leftJoin('g.users', 'u')
+            ->leftJoin('f.registrations', 'r')
+            ->addSelect('r')
+            ->where('u.id = :idUser')
+            ->setParameter("idUser", $idUser);
+
+        return $qb->getQuery()->getResult();
+    }
 }
