@@ -11,6 +11,5 @@
 /bin/
 /composer.phar
 /.idea
-.DS_Store
-
 *.php~
+.DS_Store
