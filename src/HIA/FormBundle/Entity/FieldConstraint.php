@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Lenght;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Validator\Constraints\NotEqualTo;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
@@ -50,6 +50,7 @@ class FieldConstraint
 
     /**
      * @ORM\ManyToOne(targetEntity="HIA\FormBundle\Entity\Field", inversedBy="fieldConstraints", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $fields;
 
@@ -126,7 +127,7 @@ class FieldConstraint
                 if (isset($values[1]))
                     $options['max'] = max($values);
 
-                $constraint = new Lenght($options);
+                $constraint = new Length($options);
             break;
 
             case self::$_TYPES['URL']:
