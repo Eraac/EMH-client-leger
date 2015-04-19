@@ -73,7 +73,7 @@ class Field
 
     /**
      * @ORM\ManyToOne(targetEntity="HIA\FormBundle\Entity\Form", inversedBy="fields", cascade={"persist"})
-     * @ORM\JoinTable(name="contains")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $form;
     
