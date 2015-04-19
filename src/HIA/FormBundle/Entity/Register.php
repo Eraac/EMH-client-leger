@@ -36,6 +36,7 @@ class Register
 
     /**
      * @ORM\ManyToOne(targetEntity="HIA\FormBundle\Entity\Registration", inversedBy="registers", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $registration;
 

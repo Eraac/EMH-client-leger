@@ -53,16 +53,19 @@ class Registration
 
     /**
      * @ORM\ManyToOne(targetEntity="HIA\FormBundle\Entity\Form")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $form;
 
     /**
      * @ORM\ManyToOne(targetEntity="HIA\UserBundle\Entity\User")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $userValidate; // L'utilisateur qui valide le formulaire
 
     /**
      * @ORM\ManyToOne(targetEntity="HIA\UserBundle\Entity\User")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $userSubmit; // L'utilisateur qui à soumit le formulaire
 

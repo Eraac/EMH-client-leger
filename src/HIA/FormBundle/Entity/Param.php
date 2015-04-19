@@ -30,7 +30,7 @@ class Param
 
     /**
      * @ORM\ManyToOne(targetEntity="HIA\FormBundle\Entity\FieldConstraint", inversedBy="params")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $fieldConstraint;
 

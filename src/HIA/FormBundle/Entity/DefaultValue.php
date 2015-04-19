@@ -30,7 +30,7 @@ class DefaultValue
 
     /**
      * @ORM\ManyToOne(targetEntity="HIA\FormBundle\Entity\Field", inversedBy="defaultValues")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $field;
 
