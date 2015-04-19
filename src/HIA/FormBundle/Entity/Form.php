@@ -63,7 +63,7 @@ class Form
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateCreate", type="datetime")
+     * @ORM\Column(name="dateCreate", type="datetime", options={"default"="CURRENT_TIMESTAMP"})
      */
     private $dateCreate;
 
