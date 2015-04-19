@@ -30,7 +30,7 @@ class Register
 
     /**
      * @ORM\ManyToOne(targetEntity="HIA\FormBundle\Entity\Field")
-     * @ORM\JoinColumn(name="field_id", referencedColumnName="id",  onDelete="SET NULL")
+     * @ORM\JoinColumn(name="field_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $field;
 
