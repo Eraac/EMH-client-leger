@@ -12,7 +12,7 @@ class LoadConstraint implements FixtureInterface, OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $repoField = $manager->getRepository("HIAFormBundle:Field");
+        /*$repoField = $manager->getRepository("HIAFormBundle:Field");
         $pourquoiMorphine   = $repoField->find(1);
         $quantiteMorphine   = $repoField->find(2);
         $pourquoiBequille   = $repoField->find(3);
@@ -64,7 +64,7 @@ class LoadConstraint implements FixtureInterface, OrderedFixtureInterface
         $manager->persist($maxParam);
 
         // On déclenche l'enregistrement
-        $manager->flush();
+        $manager->flush();*/
     }
     /**
      * {@inheritDoc}

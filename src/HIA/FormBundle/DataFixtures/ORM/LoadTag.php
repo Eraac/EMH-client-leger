@@ -15,12 +15,12 @@ class LoadTag implements FixtureInterface, OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $repoForm = $manager->getRepository("HIAFormBundle:Form");
+        /*$repoForm = $manager->getRepository("HIAFormBundle:Form");
         $demandeMorphine    = $repoForm->find(1);
         $demandeBequilles   = $repoForm->find(2);
         $avisHopital        = $repoForm->find(3);
 
-        $tagNames = array("Demande", "Urgent", "Informatif", "Test");
+        $tagNames = array("Demande", "Urgent", "Informatif");
         $listTags = array();
 
         foreach($tagNames as $tagName)
@@ -38,13 +38,8 @@ class LoadTag implements FixtureInterface, OrderedFixtureInterface
 
         $allForms = $repoForm->findAll();
 
-        foreach($allForms as $form)
-        {
-            $form->addTag($listTags[3]);
-        }
-
         // On déclenche l'enregistrement
-        $manager->flush();
+        $manager->flush();*/
     }
     /**
      * {@inheritDoc}

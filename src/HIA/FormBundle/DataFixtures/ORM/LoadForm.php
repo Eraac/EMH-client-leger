@@ -15,7 +15,7 @@ class LoadForm implements FixtureInterface, OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $repoUser = $manager->getRepository("HIAUserBundle:User");
+        /*$repoUser = $manager->getRepository("HIAUserBundle:User");
         $userAdministratif  = $repoUser->find(2);
         $userAll = $repoUser->find(4);
 
@@ -219,7 +219,7 @@ class LoadForm implements FixtureInterface, OrderedFixtureInterface
         }
         
         // On déclenche l'enregistrement
-        $manager->flush();
+        $manager->flush();*/
     }
     
     /**
