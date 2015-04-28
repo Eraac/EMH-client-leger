@@ -59,6 +59,7 @@ function searchForm()
                     if (0 < countForms && !end) {
                         $("#listForm").append("<tr><td class='text-center end-table' colspan='2'>Vous êtes à la fin !</td></tr>")
                         end = true;
+                        $('#moreForm').fadeOut(400);
                     }
                 }
             }
