@@ -13,7 +13,7 @@ class LoadGroup implements FixtureInterface, OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         // Les noms d'utilisateurs à créer
-        $listNames = array('Médecin', 'Administration', 'Patient');
+        /*$listNames = array('Médecin', 'Administration', 'Patient');
 
         $repo = $manager->getRepository('HIAUserBundle:User');
 
@@ -41,7 +41,7 @@ class LoadGroup implements FixtureInterface, OrderedFixtureInterface
         }
 
         // On déclenche l'enregistrement
-        $manager->flush();
+        $manager->flush();*/
     }
 
     /**

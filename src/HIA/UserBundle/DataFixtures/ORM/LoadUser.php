@@ -27,8 +27,35 @@ class LoadUser implements FixtureInterface, OrderedFixtureInterface, ContainerAw
 
     public function load(ObjectManager $manager)
     {
+        // On récupère le service qui crypte les mots de passe
+        $encoder = $this->container->get('security.password_encoder');
+
+        $user = new User();
+
+        $user->setUsername("administrateur@hia.com");
+        $user->setName("Labesse");
+        $user->setFirstName("Kévin");
+        // On ne se sert pas du sel pour l'instant
+        $user->setSalt('');
+
+        // On encode le mot de passe
+        $password = $encoder->encodePassword($user, "kevin");
+
+        // On modifie le mot de passe de l'utilisateur
+        $user->setPassword($password);
+
+        // On définit uniquement le role ROLE_USER qui est le role de base
+        $user->setRoles(array('ROLE_USER'));
+
+        $user->setIsAdmin(true);
+
+        // On le persiste
+        $manager->persist($user);
+
+        $manager->flush();
+
         // Les noms d'utilisateurs à créer (pour le login)
-        $listUsernames = array(
+        /*$listUsernames = array(
             'medecin@hia.com',
             'administratif@hia.com',
             'patient@gmail.com',
@@ -87,7 +114,7 @@ class LoadUser implements FixtureInterface, OrderedFixtureInterface, ContainerAw
         }
 
         // On déclenche l'enregistrement
-        $manager->flush();
+        $manager->flush();*/
     }
 
     /**
