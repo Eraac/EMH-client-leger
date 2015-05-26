@@ -3,6 +3,7 @@
 namespace HIA\FormBundle\ToString;
 
 use Doctrine\ORM\EntityManager;
+use HIA\FormBundle\Entity\Field;
 
 class ToString
 {
