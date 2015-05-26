@@ -14,14 +14,20 @@ class ToString
     }
 
     // Convertir les données en string si cela est nécessaire
-    public function convertToString($data, $isChoice = false)
+    public function convertToString($data, $type)
     {
         // Si data est un objet DateTime
-        if ($data instanceof \DateTime)
-            return $data->format('d-m-Y');
+        if ($data instanceof \DateTime) {
+            if ($type == Field::$_TYPES['DATETIME'])
+                return $data->format('d-m-Y H:i');
+            else if ($type == Field::$_TYPES['TIME'])
+                return $data->format('H:i');
+            else
+                return $data->format('d-m-Y');
+        }
 
         // Si la data corresponds à une liste de choix
-        else if ($isChoice)
+        else if ($type == Field::$_TYPES['RADIO'])
         {
             // On récupère le repository de DefaultValue
             $repoDefaultValue = $this->_manager->getRepository("HIAFormBundle:DefaultValue");

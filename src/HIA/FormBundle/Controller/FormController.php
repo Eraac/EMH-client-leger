@@ -127,12 +127,9 @@ class FormController extends Controller
                     // Si le champs n'a pas la contrainte USERPASSWORD
                     if (!$isUserPassword)
                     {
-                        // On regarde si le champs est un choix
-                        $isChoice = (Field::$_TYPES['RADIO'] == $field->getType()) ? true : false;
-
                         // On créer un nouvel enregistrement
                         $register = new Register();
-                        $register->setData($converterToString->convertToString($data, $isChoice))  // On lui assigne les informations
+                        $register->setData($converterToString->convertToString($data, $field->getType()))  // On lui assigne les informations
                             ->setField($field)                                  // On lui indique le field correspondant
                             ->setRegistration($registration);                   // On lui indique l'inscription correspondant
 
