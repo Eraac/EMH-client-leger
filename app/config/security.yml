@@ -33,9 +33,6 @@ security:
             form_login:
                 login_path: HIAUserLogin
                 check_path: login_check
-            logout:
-                path:   logout
-                target: /
 
     access_control:
         # - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY}
