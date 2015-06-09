@@ -1,6 +1,6 @@
 services:
     hia_session.record:
-        class: HIA\UserBundle\RecordSession\RecordSession
+        class: HIA\UserBundle\RecordAuthentification\RecordAuthentification
         arguments: [@doctrine.orm.entity_manager, @session]
 
     hia_session.listener:
@@ -8,3 +8,4 @@ services:
             arguments: [@hia_session.record]
             tags:
                 - { name: kernel.event_listener, event: security.interactive_login, method: processLogin }
+                - { name: kernel.event_listener, event: security.authentication.failure, method: processLoginFailure }

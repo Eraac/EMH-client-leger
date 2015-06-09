@@ -48,8 +48,6 @@ class UserController extends Controller
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
-        $this->get('hia_session.record')->recordLogout($user);
-
         // Nettoye la session
         $this->get('security.token_storage')->setToken(null);
         $this->get('request')->getSession()->invalidate();

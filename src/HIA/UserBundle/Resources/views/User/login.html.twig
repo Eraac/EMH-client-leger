@@ -25,9 +25,11 @@
                     <div class="panel-body">
                         {% include 'HIACoreBundle::messages.html.twig' %}
                         {# S'il y a une erreur, on l'affiche dans un cadre #}
-                        {% if error %}
-                            <div class="alert alert-danger">{{ error.message }}</div>
-                        {% endif %}
+                        {% for flashMessage in app.session.flashbag.get('error') %}
+                            <div class="alert alert-danger">
+                                {{ flashMessage }}
+                            </div>
+                        {% endfor %}
                         <form accept-charset="UTF-8" role="form" method="POST" action="{{ path('login_check') }}">
                             <fieldset>
 

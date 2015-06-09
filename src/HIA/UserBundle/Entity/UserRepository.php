@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+    public function isExist($username)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select("COUNT(u)")
+            ->where('u.username = :username')
+            ->setParameters(array(
+                "username" =>  $username,
+            ));
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }
